@@ -13,7 +13,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="text-2xl font-bold tracking-tight">Agenco</div>
           <div className="flex items-center gap-8">
-            <a href="#how" className="text-sm text-muted-foreground hover:text-foreground transition">How it works</a>
+            <a href="#how" className="text-sm text-muted-foreground hover:text-foreground transition">How it works SAmrat</a>
             <a href="#benefits" className="text-sm text-muted-foreground hover:text-foreground transition">Results</a>
             <Button className="bg-primary text-primary-foreground hover:bg-primary/90">Book audit</Button>
           </div>
