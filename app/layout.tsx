@@ -1,6 +1,10 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { Header } from '@/components/header'
+import { FaqSection } from '@/components/faq-section'
+import { Footer } from '@/components/footer'
+import { ExcludeOnPaths } from '@/components/exclude-on-paths'
 import './globals.css'
 
 const _geist = Geist({ subsets: ["latin"] });
@@ -29,6 +33,9 @@ export const metadata: Metadata = {
   },
 }
 
+// Revalidate layout-level data every 60 seconds
+export const revalidate = 60
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -37,7 +44,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="font-sans antialiased">
-        {children}
+        <div className="min-h-screen bg-background text-foreground flex flex-col">
+          <Header />
+          <main className="flex-1">{children}</main>
+          <ExcludeOnPaths excludePaths={["/blog*"]}>
+            <FaqSection />
+          </ExcludeOnPaths>
+          <Footer />
+        </div>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

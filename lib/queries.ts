@@ -285,3 +285,19 @@ export async function getNavigation() {
     }`
   )
 }
+
+// ─── FAQ Queries ──────────────────────────────────────────────────────
+
+/** Fetch FAQ items (singleton) */
+export async function getFaqs() {
+  return client.fetch(
+    `*[_type == "faq"][0] {
+      heading,
+      badge,
+      items[] {
+        question,
+        answer
+      }
+    }`
+  )
+}

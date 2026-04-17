@@ -9,8 +9,6 @@ import { ArrowLeft, Clock, Calendar } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { PortableText } from '@portabletext/react'
 import { PortableTextComponents } from '@/components/portable-text'
-import { Header } from '@/components/header'
-import { Footer } from '@/components/footer'
 
 // Revalidate every 60 seconds
 export const revalidate = 60
@@ -60,8 +58,7 @@ export default async function BlogPostPage({ params }: PostPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Header active="blog" />
+    <>
 
       {/* Back Link */}
       <div className="max-w-4xl mx-auto px-6 pt-8">
@@ -243,7 +240,6 @@ export default async function BlogPostPage({ params }: PostPageProps) {
         )}
       </article>
 
-      <Footer />
-    </div>
+    </>
   )
 }

@@ -1,7 +1,5 @@
 import { Metadata } from 'next'
 import { getContactPage } from '@/lib/queries'
-import { Header } from '@/components/header'
-import { Footer } from '@/components/footer'
 import ContactPageClient from '@/components/contact-form'
 
 export const metadata: Metadata = {
@@ -15,11 +13,5 @@ export const revalidate = 60
 export default async function ContactPage() {
   const data = (await getContactPage()) || {}
 
-  return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Header active="contact" />
-      <ContactPageClient data={data} />
-      <Footer />
-    </div>
-  )
+  return <ContactPageClient data={data} />
 }

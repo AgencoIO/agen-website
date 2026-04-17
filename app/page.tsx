@@ -3,8 +3,6 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { ArrowRight, Zap, TrendingUp, Layers, Shield, Target, BarChart } from 'lucide-react'
 import { DashboardPreview } from '@/components/dashboard-preview'
-import { Header } from '@/components/header'
-import { Footer } from '@/components/footer'
 import { getHomepage } from '@/lib/queries'
 
 // Revalidate every 60 seconds
@@ -122,9 +120,9 @@ const defaults = {
   ctaHeading: 'Turn Your Data Into Growth',
   ctaSubheading:
     "Get a free, no-obligation data audit. We'll show you exactly where you're leaking revenue and how much you can capture.",
-  ctaPrimaryText: 'Book your free audit',
-  ctaPrimaryLink: '#',
-  ctaSecondaryText: 'Schedule a call',
+  ctaPrimaryText: 'Book a Consultation',
+  ctaPrimaryLink: '',
+  ctaSecondaryText: 'Book a Consultation',
   ctaSecondaryLink: 'https://calendly.com/sam_rat/30min',
   footerTagline: 'Data infrastructure for e-commerce brands.',
   contactEmail: 'hello@agenco.io',
@@ -137,8 +135,7 @@ export default async function Home() {
   const d = { ...defaults, ...cmsData }
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Header active="home" />
+    <>
 
       {/* Hero Section */}
       <section className="max-w-full mx-auto px-6 py-24">
@@ -374,7 +371,7 @@ export default async function Home() {
                 {d.ctaPrimaryText}
               </Button>
             </Link>
-            <a
+            {/* <a
               href={d.ctaSecondaryLink || '#'}
               target="_blank"
               rel="noopener noreferrer"
@@ -386,12 +383,11 @@ export default async function Home() {
               >
                 {d.ctaSecondaryText}
               </Button>
-            </a>
+            </a> */}
           </div>
         </div>
       </section>
 
-      <Footer tagline={d.footerTagline} contactEmail={d.contactEmail} />
-    </div>
+    </>
   )
 }

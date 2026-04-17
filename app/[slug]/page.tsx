@@ -5,8 +5,6 @@ import { getPageBySlug, getAllPageSlugs } from '@/lib/queries'
 import { Button } from '@/components/ui/button'
 import { PortableText } from '@portabletext/react'
 import { PortableTextComponents } from '@/components/portable-text'
-import { Header } from '@/components/header'
-import { Footer } from '@/components/footer'
 
 // Revalidate every 60 seconds
 export const revalidate = 60
@@ -47,8 +45,7 @@ export default async function CMSPage({ params }: PageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Header />
+    <>
 
       {/* Page Content */}
       <article className="max-w-4xl mx-auto px-6 py-16">
@@ -73,7 +70,6 @@ export default async function CMSPage({ params }: PageProps) {
         )}
       </article>
 
-      <Footer />
-    </div>
+    </>
   )
 }
