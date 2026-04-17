@@ -1,0 +1,211 @@
+import { client } from './sanity'
+
+// ─── Blog Post Queries ────────────────────────────────────────────────
+
+/** Fetch all published blog posts (for listing page) */
+export async function getAllPosts() {
+  return client.fetch(
+    `*[_type == "post"] | order(publishedAt desc) {
+      _id,
+      title,
+      slug,
+      excerpt,
+      publishedAt,
+      readTime,
+      mainImage {
+        asset->{
+          _id,
+          url,
+          metadata { dimensions, lqip }
+        },
+        alt
+      },
+      author->{
+        name,
+        slug,
+        image {
+          asset->{ _id, url }
+        },
+        role
+      },
+      categories[]->{
+        _id,
+        title,
+        slug,
+        color
+      }
+    }`
+  )
+}
+
+/** Fetch a single blog post by slug */
+export async function getPostBySlug(slug: string) {
+  return client.fetch(
+    `*[_type == "post" && slug.current == $slug][0] {
+      _id,
+      title,
+      slug,
+      excerpt,
+      publishedAt,
+      readTime,
+      body[] {
+        ...,
+        _type == "image" => {
+          ...,
+          asset->{
+            _id,
+            url,
+            metadata { dimensions, lqip }
+          }
+        }
+      },
+      mainImage {
+        asset->{
+          _id,
+          url,
+          metadata { dimensions, lqip }
+        },
+        alt
+      },
+      author->{
+        name,
+        slug,
+        image {
+          asset->{ _id, url }
+        },
+        bio,
+        role,
+        social
+      },
+      categories[]->{
+        _id,
+        title,
+        slug,
+        color
+      }
+    }`,
+    { slug }
+  )
+}
+
+/** Fetch all post slugs (for static generation) */
+export async function getAllPostSlugs() {
+  return client.fetch(
+    `*[_type == "post" && defined(slug.current)][].slug.current`
+  )
+}
+
+/** Fetch posts by category slug */
+export async function getPostsByCategory(categorySlug: string) {
+  return client.fetch(
+    `*[_type == "post" && $categorySlug in categories[]->slug.current] | order(publishedAt desc) {
+      _id,
+      title,
+      slug,
+      excerpt,
+      publishedAt,
+      readTime,
+      mainImage {
+        asset->{
+          _id,
+          url,
+          metadata { dimensions, lqip }
+        },
+        alt
+      },
+      author->{
+        name,
+        slug,
+        image {
+          asset->{ _id, url }
+        },
+        role
+      },
+      categories[]->{
+        _id,
+        title,
+        slug,
+        color
+      }
+    }`,
+    { categorySlug }
+  )
+}
+
+// ─── Category Queries ─────────────────────────────────────────────────
+
+/** Fetch all categories */
+export async function getAllCategories() {
+  return client.fetch(
+    `*[_type == "category"] | order(title asc) {
+      _id,
+      title,
+      slug,
+      description,
+      color
+    }`
+  )
+}
+
+// ─── Author Queries ───────────────────────────────────────────────────
+
+/** Fetch author by slug */
+export async function getAuthorBySlug(slug: string) {
+  return client.fetch(
+    `*[_type == "author" && slug.current == $slug][0] {
+      _id,
+      name,
+      slug,
+      image {
+        asset->{ _id, url }
+      },
+      bio,
+      role,
+      social
+    }`,
+    { slug }
+  )
+}
+
+// ─── Site Settings Queries ────────────────────────────────────────────
+
+/** Fetch site settings (singleton) */
+export async function getSiteSettings() {
+  return client.fetch(
+    `*[_type == "siteSettings"][0] {
+      title,
+      description,
+      ogImage {
+        asset->{ _id, url }
+      },
+      socialLinks,
+      footer
+    }`
+  )
+}
+
+// ─── Page Queries ─────────────────────────────────────────────────────
+
+/** Fetch a CMS page by slug */
+export async function getPageBySlug(slug: string) {
+  return client.fetch(
+    `*[_type == "page" && slug.current == $slug][0] {
+      _id,
+      title,
+      slug,
+      description,
+      body[] {
+        ...,
+        _type == "image" => {
+          ...,
+          asset->{
+            _id,
+            url,
+            metadata { dimensions, lqip }
+          }
+        }
+      }
+    }`,
+    { slug }
+  )
+}

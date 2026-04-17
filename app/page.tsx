@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ArrowRight, Zap, TrendingUp, Layers } from 'lucide-react';
@@ -11,10 +12,11 @@ export default function Home() {
       {/* Navigation */}
       <nav className="border-b border-border sticky top-0 z-50 bg-background/95 backdrop-blur">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="text-2xl font-bold tracking-tight">Agenco</div>
+          <Link href="/" className="text-2xl font-bold tracking-tight">Agenco</Link>
           <div className="flex items-center gap-8">
             <a href="#how" className="text-sm text-muted-foreground hover:text-foreground transition">How it works</a>
             <a href="#benefits" className="text-sm text-muted-foreground hover:text-foreground transition">Results</a>
+            <Link href="/blog" className="text-sm text-muted-foreground hover:text-foreground transition">Blog</Link>
             <Button className="bg-primary text-primary-foreground hover:bg-primary/90">Book audit</Button>
           </div>
         </div>
@@ -254,7 +256,7 @@ export default function Home() {
               <p className="font-semibold text-sm mb-4">Company</p>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li><a href="#" className="hover:text-foreground transition">About</a></li>
-                <li><a href="#" className="hover:text-foreground transition">Blog</a></li>
+                <li><Link href="/blog" className="hover:text-foreground transition">Blog</Link></li>
                 <li><a href="#" className="hover:text-foreground transition">Careers</a></li>
               </ul>
             </div>
