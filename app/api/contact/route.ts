@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-const RECIPIENTS = [
-  'samratshakya5@gmail.com',
-  'angirathnepali@gmail.com',
-]
+const RECIPIENTS = (process.env.CONTACT_FORM_RECIPIENTS || '')
+  .split(',')
+  .map((e) => e.trim())
+  .filter(Boolean)
 
 export async function POST(request: NextRequest) {
   try {
