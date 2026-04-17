@@ -9,6 +9,8 @@ import { ArrowLeft, Clock, Calendar } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { PortableText } from '@portabletext/react'
 import { PortableTextComponents } from '@/components/portable-text'
+import { Header } from '@/components/header'
+import { Footer } from '@/components/footer'
 
 // Revalidate every 60 seconds
 export const revalidate = 60
@@ -59,31 +61,7 @@ export default async function BlogPostPage({ params }: PostPageProps) {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Navigation */}
-      <nav className="border-b border-border sticky top-0 z-50 bg-background/95 backdrop-blur">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <Link href="/" className="text-2xl font-bold tracking-tight">
-            Agenco
-          </Link>
-          <div className="flex items-center gap-8">
-            <Link
-              href="/#how"
-              className="text-sm text-muted-foreground hover:text-foreground transition"
-            >
-              How it works
-            </Link>
-            <Link
-              href="/blog"
-              className="text-sm text-muted-foreground hover:text-foreground transition"
-            >
-              Blog
-            </Link>
-            <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
-              Book audit
-            </Button>
-          </div>
-        </div>
-      </nav>
+      <Header active="blog" />
 
       {/* Back Link */}
       <div className="max-w-4xl mx-auto px-6 pt-8">
@@ -265,24 +243,7 @@ export default async function BlogPostPage({ params }: PostPageProps) {
         )}
       </article>
 
-      {/* Footer */}
-      <footer className="border-t border-border py-12 bg-secondary/5">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="border-t border-border pt-8 flex justify-between items-center text-sm text-muted-foreground">
-            <p>
-              &copy; {new Date().getFullYear()} Agenco. All rights reserved.
-            </p>
-            <div className="flex gap-6">
-              <a href="#" className="hover:text-foreground transition">
-                Privacy
-              </a>
-              <a href="#" className="hover:text-foreground transition">
-                Terms
-              </a>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   )
 }

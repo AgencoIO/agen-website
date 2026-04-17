@@ -209,3 +209,79 @@ export async function getPageBySlug(slug: string) {
     { slug }
   )
 }
+
+/** Fetch all page slugs (for static generation) */
+export async function getAllPageSlugs() {
+  return client.fetch(
+    `*[_type == "page" && defined(slug.current)][].slug.current`
+  )
+}
+
+// ─── Homepage Queries ─────────────────────────────────────────────────
+
+/** Fetch homepage content (singleton) */
+export async function getHomepage() {
+  return client.fetch(
+    `*[_type == "homepage"][0] {
+      heroHeading,
+      heroSubheading,
+      heroPrimaryCta,
+      heroPrimaryCtaLink,
+      heroSecondaryCta,
+      heroStats,
+      problemHeading,
+      problemSubheading,
+      problemCards,
+      howHeading,
+      howSteps,
+      benefitsHeading,
+      benefitItems,
+      testimonialsHeading,
+      testimonials,
+      ctaHeading,
+      ctaSubheading,
+      ctaPrimaryText,
+      ctaPrimaryLink,
+      ctaSecondaryText,
+      ctaSecondaryLink,
+      footerTagline,
+      contactEmail
+    }`
+  )
+}
+
+// ─── Contact Page Queries ─────────────────────────────────────────────
+
+/** Fetch contact page content (singleton) */
+export async function getContactPage() {
+  return client.fetch(
+    `*[_type == "contactPage"][0] {
+      heading,
+      subheading,
+      formHeading,
+      formDescription,
+      contactInfo,
+      successMessage,
+      calendlyLink
+    }`
+  )
+}
+
+// ─── Navigation Queries ───────────────────────────────────────────────
+
+/** Fetch navigation links (singleton) */
+export async function getNavigation() {
+  return client.fetch(
+    `*[_type == "navigation"][0] {
+      headerLinks[] {
+        label,
+        href,
+        openInNewTab
+      },
+      footerLinks[] {
+        label,
+        href
+      }
+    }`
+  )
+}

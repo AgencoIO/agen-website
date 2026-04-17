@@ -7,6 +7,8 @@ import { format } from 'date-fns'
 import { ArrowRight, Clock, Tag } from 'lucide-react'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { Header } from '@/components/header'
+import { Footer } from '@/components/footer'
 
 export const metadata: Metadata = {
   title: 'Blog | Agenco',
@@ -57,31 +59,7 @@ export default async function BlogPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Navigation */}
-      <nav className="border-b border-border sticky top-0 z-50 bg-background/95 backdrop-blur">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <Link href="/" className="text-2xl font-bold tracking-tight">
-            Agenco
-          </Link>
-          <div className="flex items-center gap-8">
-            <Link
-              href="/#how"
-              className="text-sm text-muted-foreground hover:text-foreground transition"
-            >
-              How it works
-            </Link>
-            <Link
-              href="/blog"
-              className="text-sm text-foreground font-medium transition"
-            >
-              Blog
-            </Link>
-            <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
-              Book audit
-            </Button>
-          </div>
-        </div>
-      </nav>
+      <Header active="blog" />
 
       {/* Hero */}
       <section className="py-20 border-b border-border">
@@ -232,22 +210,7 @@ export default async function BlogPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-border py-12 bg-secondary/5">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="border-t border-border pt-8 flex justify-between items-center text-sm text-muted-foreground">
-            <p>&copy; {new Date().getFullYear()} Agenco. All rights reserved.</p>
-            <div className="flex gap-6">
-              <a href="#" className="hover:text-foreground transition">
-                Privacy
-              </a>
-              <a href="#" className="hover:text-foreground transition">
-                Terms
-              </a>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   )
 }
