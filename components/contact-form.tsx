@@ -414,7 +414,7 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
 
               {/* Calendly CTA */}
               {d.calendlyLink && (
-                <Card className="border-primary/20 bg-primary/5 p-6 space-y-4">
+                <Card className="border-primary/20 bg-primary/5 p-7 space-y-4 mt-8">
                   <h3 className="font-semibold">Prefer a live conversation?</h3>
                   <p className="text-sm text-muted-foreground">
                     Skip the form and book a 30-minute call directly.
