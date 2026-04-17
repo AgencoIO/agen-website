@@ -24,6 +24,34 @@ const iconMap: Record<string, React.ElementType> = {
   'map-pin': MapPin,
 }
 
+const countries = [
+  { code: 'US', dial: '+1', flag: '🇺🇸', name: 'United States' },
+  { code: 'GB', dial: '+44', flag: '🇬🇧', name: 'United Kingdom' },
+  { code: 'NP', dial: '+977', flag: '🇳🇵', name: 'Nepal' },
+  { code: 'IN', dial: '+91', flag: '🇮🇳', name: 'India' },
+  { code: 'CA', dial: '+1', flag: '🇨🇦', name: 'Canada' },
+  { code: 'AU', dial: '+61', flag: '🇦🇺', name: 'Australia' },
+  { code: 'DE', dial: '+49', flag: '🇩🇪', name: 'Germany' },
+  { code: 'FR', dial: '+33', flag: '🇫🇷', name: 'France' },
+  { code: 'JP', dial: '+81', flag: '🇯🇵', name: 'Japan' },
+  { code: 'SG', dial: '+65', flag: '🇸🇬', name: 'Singapore' },
+  { code: 'AE', dial: '+971', flag: '🇦🇪', name: 'UAE' },
+  { code: 'BR', dial: '+55', flag: '🇧🇷', name: 'Brazil' },
+  { code: 'MX', dial: '+52', flag: '🇲🇽', name: 'Mexico' },
+  { code: 'KR', dial: '+82', flag: '🇰🇷', name: 'South Korea' },
+  { code: 'NL', dial: '+31', flag: '🇳🇱', name: 'Netherlands' },
+  { code: 'SE', dial: '+46', flag: '🇸🇪', name: 'Sweden' },
+  { code: 'CH', dial: '+41', flag: '🇨🇭', name: 'Switzerland' },
+  { code: 'IT', dial: '+39', flag: '🇮🇹', name: 'Italy' },
+  { code: 'ES', dial: '+34', flag: '🇪🇸', name: 'Spain' },
+  { code: 'PH', dial: '+63', flag: '🇵🇭', name: 'Philippines' },
+  { code: 'NG', dial: '+234', flag: '🇳🇬', name: 'Nigeria' },
+  { code: 'ZA', dial: '+27', flag: '🇿🇦', name: 'South Africa' },
+  { code: 'CN', dial: '+86', flag: '🇨🇳', name: 'China' },
+  { code: 'HK', dial: '+852', flag: '🇭🇰', name: 'Hong Kong' },
+  { code: 'IL', dial: '+972', flag: '🇮🇱', name: 'Israel' },
+]
+
 interface ContactPageClientProps {
   data: {
     heading?: string
@@ -62,6 +90,7 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
 
   const [formState, setFormState] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle')
   const [errorMsg, setErrorMsg] = useState('')
+  const [countryCode, setCountryCode] = useState('US')
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -70,6 +99,8 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
     service: '',
     message: '',
   })
+
+  const selectedCountry = countries.find((c) => c.code === countryCode) || countries[0]
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -221,16 +252,42 @@ export default function ContactPageClient({ data }: ContactPageClientProps) {
                       <label htmlFor="contact-phone" className="text-sm font-medium">
                         Phone
                       </label>
-                      <input
-                        id="contact-phone"
-                        type="tel"
-                        value={formData.phone}
-                        onChange={(e) =>
-                          setFormData({ ...formData, phone: e.target.value })
-                        }
-                        placeholder="+1 (555) 000-0000"
-                        className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition"
-                      />
+                      <div className="flex">
+                        <div className="relative">
+                          <select
+                            id="contact-country"
+                            value={countryCode}
+                            onChange={(e) => setCountryCode(e.target.value)}
+                            className="appearance-none h-full pl-3 pr-8 py-3 rounded-l-lg border border-r-0 border-border bg-secondary/30 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition text-sm cursor-pointer"
+                          >
+                            {countries.map((c) => (
+                              <option key={c.code} value={c.code}>
+                                {c.flag} {c.dial}
+                              </option>
+                            ))}
+                          </select>
+                          <div className="pointer-events-none absolute inset-y-0 right-1.5 flex items-center text-muted-foreground">
+                            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                          </div>
+                        </div>
+                        <input
+                          id="contact-phone"
+                          type="tel"
+                          value={formData.phone}
+                          onChange={(e) => {
+                            // Allow only digits, spaces, dashes, parens
+                            const cleaned = e.target.value.replace(/[^\d\s\-()]/g, '')
+                            setFormData({ ...formData, phone: cleaned })
+                          }}
+                          placeholder="(555) 000-0000"
+                          className="flex-1 min-w-0 px-4 py-3 rounded-r-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition"
+                        />
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        {selectedCountry.flag} {selectedCountry.name} ({selectedCountry.dial})
+                      </p>
                     </div>
                   </div>
 
