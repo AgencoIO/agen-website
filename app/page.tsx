@@ -162,13 +162,13 @@ export default async function Home() {
                     {d.heroPrimaryCta} <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
                 </Link>
-                <Button
+                {/* <Button
                   size="lg"
                   variant="outline"
                   className="border-border text-foreground hover:bg-secondary/30"
                 >
                   {d.heroSecondaryCta}
-                </Button>
+                </Button> */}
               </div>
               {d.heroStats && d.heroStats.length > 0 && (
                 <div className="flex gap-8 pt-4">
