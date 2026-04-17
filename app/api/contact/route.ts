@@ -96,7 +96,7 @@ export async function POST(request: NextRequest) {
         Authorization: `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: 'Agenco <onboarding@resend.dev>',
+        from: 'Agenco <onboarding@agenco.io>',
         to: RECIPIENTS,
         subject: `New Consultation Request from ${name}`,
         html: emailHtml,
