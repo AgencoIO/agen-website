@@ -70,24 +70,6 @@ const defaults = {
         'Price mismatches, stockouts on best sellers, and missed competitor moves cost you 15–30% in lost revenue.',
     },
   ],
-  howHeading: 'How Agenco Works',
-  howSteps: [
-    {
-      title: 'Data Audit',
-      description:
-        'We analyze your Shopify, inventory, and channel data to find gaps, inconsistencies, and growth opportunities.',
-    },
-    {
-      title: 'Pipeline Build',
-      description:
-        'We design and deploy custom data pipelines that ingest, normalize, and enrich your data in real time.',
-    },
-    {
-      title: 'Intelligence & ROI',
-      description:
-        'Your team gets dashboards, alerts, and insights that drive pricing, inventory, and competitive decisions.',
-    },
-  ],
   whatWeBuildHeading: 'What We Build',
   whatWeBuildItems: [
     {
@@ -217,11 +199,6 @@ export default async function Home() {
 
         <div className="max-w-6xl mx-auto space-y-10 relative z-10 text-center flex flex-col items-center">
           
-          <div className="inline-flex items-center justify-center gap-2.5 px-4 py-1.5 bg-secondary/10 border border-primary/20 text-primary font-mono text-xs sm:text-sm tracking-widest uppercase mb-2 backdrop-blur-sm w-fit transition-colors hover:bg-secondary/20 hover:border-primary/40 cursor-default">
-            <span className="w-1.5 h-1.5 bg-primary rounded-none shadow-[0_0_10px_rgba(var(--primary),0.8)] animate-[pulse_2s_ease-in-out_infinite]"></span>
-            System Status: Nominal
-          </div>
-
           <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black tracking-tighter text-foreground text-balance drop-shadow-sm leading-[1.1]">
             {d.heroHeading}
           </h1>
