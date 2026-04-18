@@ -229,6 +229,17 @@ export async function getHomepage() {
       heroPrimaryCtaLink,
       heroSecondaryCta,
       heroStats,
+      trustedByHeading,
+      trustedByCompanies[] {
+        asset->{ _id, url },
+        alt
+      },
+      architectureHeading,
+      architectureSubheading,
+      architectureLayers,
+      toolsHeading,
+      toolsDescription,
+      toolsList,
       problemHeading,
       problemSubheading,
       problemCards,

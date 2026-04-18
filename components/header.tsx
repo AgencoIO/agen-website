@@ -91,7 +91,7 @@ export async function Header({ active }: HeaderProps) {
             )
           })}
           <Link href="/contact">
-            <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
+            <Button className="rounded-full font-semibold shadow-md hover:scale-105 transition-all bg-primary text-primary-foreground hover:bg-primary/90">
               Book a Consultation
             </Button>
           </Link>

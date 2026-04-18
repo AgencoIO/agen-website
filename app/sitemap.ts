@@ -16,7 +16,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // 2. Dynamic Blog Posts
   const postSlugs = await getAllPostSlugs()
-  const blogRoutes = postSlugs.map((slug) => ({
+  const blogRoutes = postSlugs.map((slug: any) => ({
     url: `${baseUrl}/blog/${slug}`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
@@ -25,7 +25,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // 3. Dynamic Pages (e.g., About Us, Services managed in Sanity)
   const pageSlugs = await getAllPageSlugs()
-  const staticPagesFromCms = pageSlugs.map((slug) => ({
+  const staticPagesFromCms = pageSlugs.map((slug: any) => ({
     url: `${baseUrl}/${slug}`,
     lastModified: new Date(),
     changeFrequency: 'monthly' as const,
