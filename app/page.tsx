@@ -26,6 +26,12 @@ const defaults = {
   heroPrimaryCta: 'Book a Consultation',
   heroPrimaryCtaLink: '/contact',
   heroSecondaryCta: 'See how it works',
+  heroStats: [
+    { value: '500M+', label: 'Events/Day' },
+    { value: '99.99%', label: 'Uptime' },
+    { value: '<50ms', label: 'Latency' },
+    { value: '100%', label: 'Accuracy' }
+  ],
   trustedByHeading: 'TRUSTED BY LEADING COMPANIES',
   trustedByCompanies: [],
   
@@ -80,6 +86,39 @@ const defaults = {
       title: 'Intelligence & ROI',
       description:
         'Your team gets dashboards, alerts, and insights that drive pricing, inventory, and competitive decisions.',
+    },
+  ],
+  whatWeBuildHeading: 'What We Build',
+  whatWeBuildItems: [
+    {
+      title: 'Automated Pricing Engines',
+      description: 'Ingest competitor pricing, monitor elasticity, and update thousands of SKUs in real time. Never lose a sale on price, never leave margin on the table.',
+      tags: ['Algorithmic Pricing', 'Competitor Intelligence', 'Real-time Updates']
+    },
+    {
+      title: 'Unified Inventory Networks',
+      description: 'Sync Shopify, Amazon, 3PLs, and retail POS systems into a single source of truth. Prevent stockouts and drastically reduce carrying costs.',
+      tags: ['Multi-channel Sync', 'Demand Forecasting', '3PL Integration']
+    },
+    {
+      title: 'Actionable Margin Dashboards',
+      description: 'Go beyond basic Google Analytics. See exact landed costs, ad spend dilution, and net profit per SKU instantly.',
+      tags: ['Profitability Tracking', 'Executive Reporting', 'Live Dashboards']
+    }
+  ],
+  howHeading: 'How We Process',
+  howSteps: [
+    {
+      title: 'Data Audit',
+      description: 'We analyze your Shopify, inventory, and channel data to find gaps, inconsistencies, and growth opportunities.',
+    },
+    {
+      title: 'Pipeline Build',
+      description: 'We design and deploy custom data pipelines that ingest, normalize, and enrich your data in real time.',
+    },
+    {
+      title: 'Intelligence & ROI',
+      description: 'Your team gets dashboards, alerts, and insights that drive pricing, inventory, and competitive decisions.',
     },
   ],
   benefitsHeading: 'Why Teams Choose Agenco',
@@ -147,6 +186,7 @@ export default async function Home() {
     ...defaults,
     ...cmsData,
     trustedByCompanies: cmsData.trustedByCompanies ?? defaults.trustedByCompanies,
+    heroStats: cmsData.heroStats ?? defaults.heroStats,
     architectureLayers: cmsData.architectureLayers ?? defaults.architectureLayers,
     toolsList: cmsData.toolsList ?? defaults.toolsList,
     problemCards: cmsData.problemCards ?? defaults.problemCards,
@@ -155,41 +195,89 @@ export default async function Home() {
     testimonials: cmsData.testimonials ?? defaults.testimonials,
   }
 
+  // Handle Sanity returning null/empty arrays for lists, maintaining fallbacks
+  const heroStats = d.heroStats?.length ? d.heroStats : defaults.heroStats
+  const toolsList = d.toolsList?.length ? d.toolsList : defaults.toolsList
+  const problemCards = d.problemCards?.length ? d.problemCards : defaults.problemCards
+  const howSteps = d.howSteps?.length ? d.howSteps : defaults.howSteps
+  const whatWeBuildItems = d.whatWeBuildItems?.length ? d.whatWeBuildItems : defaults.whatWeBuildItems
+  const benefitItems = d.benefitItems?.length ? d.benefitItems : defaults.benefitItems
+  const testimonials = d.testimonials?.length ? d.testimonials : defaults.testimonials
+
   return (
     <>
       {/* Hero Section */}
-      <section className="relative overflow-hidden isolate max-w-full mx-auto px-6 py-24 sm:pt-22 sm:pb-16 lg:pt-40 lg:pb-20 border-b border-border">
-        {/* Dynamic Background Image - Inline style for reliability */}
-        <div 
-          className="absolute inset-0 -z-20 bg-cover bg-center bg-no-repeat opacity-90"
-          style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop")' }}
-        ></div>
-        {/* Dark overlay for text readability */}
-        <div className="absolute inset-0 -z-10 bg-black/60 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_rgba(0,0,0,0.8)_100%)]"></div>
+      <section className="relative overflow-hidden isolate max-w-full mx-auto px-4 sm:px-6 pt-24 pb-16 lg:pt-32 lg:pb-24 border-b border-border bg-background">
+        
+        {/* Advanced Data Grid CSS Background */}
+        <div className="absolute inset-0 -z-20 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:48px_48px]">
+          <div className="absolute left-0 right-0 top-1/4 -z-10 m-auto h-[400px] w-[600px] rounded-[100%] bg-primary/10 opacity-30 blur-[120px] pointer-events-none"></div>
+          <div className="absolute inset-x-0 bottom-0 h-[40%] bg-gradient-to-t from-background to-transparent pointer-events-none"></div>
+        </div>
 
-        <div className="max-w-5xl mx-auto text-center space-y-10 relative z-10">
-          <h1 className="text-5xl lg:text-7xl font-extrabold tracking-tight text-white text-balance drop-shadow-lg">
+        <div className="max-w-6xl mx-auto space-y-10 relative z-10 text-center flex flex-col items-center">
+          
+          <div className="inline-flex items-center justify-center gap-2.5 px-4 py-1.5 bg-secondary/10 border border-primary/20 text-primary font-mono text-xs sm:text-sm tracking-widest uppercase mb-2 backdrop-blur-sm w-fit transition-colors hover:bg-secondary/20 hover:border-primary/40 cursor-default">
+            <span className="w-1.5 h-1.5 bg-primary rounded-none shadow-[0_0_10px_rgba(var(--primary),0.8)] animate-[pulse_2s_ease-in-out_infinite]"></span>
+            System Status: Nominal
+          </div>
+
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black tracking-tighter text-foreground text-balance drop-shadow-sm leading-[1.1]">
             {d.heroHeading}
           </h1>
-          <p className="text-xl lg:text-2xl text-slate-200 max-w-3xl mx-auto text-balance drop-shadow-md">
+          
+          <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground/90 max-w-3xl text-balance leading-relaxed">
             {d.heroSubheading}
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-            <Link href={d.heroPrimaryCtaLink || '/contact'}>
-              <Button size="lg" className="h-14 px-8 text-lg bg-primary text-primary-foreground hover:bg-primary/90 font-semibold rounded-full shadow-lg shadow-primary/30 transition-all hover:scale-105">
-                {d.heroPrimaryCta} <ArrowRight className="w-5 h-5 ml-2" />
+          
+          <div className="flex flex-col sm:flex-row gap-5 pt-8 w-full sm:w-auto px-4 sm:px-0">
+            <Link href={d.heroPrimaryCtaLink || '/contact'} className="w-full sm:w-auto">
+              <Button size="lg" className="w-full sm:w-auto h-14 md:h-16 px-10 text-sm md:text-base font-mono tracking-widest uppercase bg-primary text-primary-foreground hover:bg-primary/90 rounded-none border border-primary shadow-[0_0_20px_rgba(var(--primary),0.15)] hover:shadow-[0_0_35px_rgba(var(--primary),0.4)] transition-all duration-300 group">
+                {d.heroPrimaryCta} 
+                <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-1.5 transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]" />
               </Button>
             </Link>
+            
+            {d.heroSecondaryCta && (
+              <Button size="lg" variant="outline" className="w-full sm:w-auto h-14 md:h-16 px-10 text-sm md:text-base font-mono tracking-widest uppercase rounded-none border-border bg-background/50 backdrop-blur-sm hover:bg-muted/50 hover:text-foreground transition-all duration-300">
+                {d.heroSecondaryCta}
+              </Button>
+            )}
           </div>
+
+          {/* Hero Stats */}
+          {heroStats && heroStats.length > 0 && (
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-4xl pt-20 mt-4">
+               {heroStats.map((stat: any, i: number) => (
+                 <div key={i} className="flex flex-col gap-2 border-t border-border pt-6 text-center hover:border-primary/50 transition-colors duration-300 cursor-default group">
+                    <span className="text-3xl md:text-4xl font-black font-mono tracking-tight text-foreground group-hover:text-primary transition-colors">
+                      {stat.value}
+                    </span>
+                    <span className="text-xs md:text-sm font-mono tracking-widest uppercase text-muted-foreground/80">
+                      {stat.label}
+                    </span>
+                 </div>
+               ))}
+            </div>
+          )}
+
+          {/* Trusted Companies */}
           {d.trustedByCompanies && d.trustedByCompanies.length > 0 && (
-            <div className="pt-16 mt-6 border-t border-white/60">
-              <h2 className="text-2xl font-bold tracking-widest text-white/80 mb-6">
-                {d.trustedByHeading}
-              </h2>
-              <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-8 opacity-90 transition-all duration-500">
+            <div className="w-full max-w-5xl pt-16 mt-8">
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center" aria-hidden="true">
+                  <div className="w-full border-t border-border/60"></div>
+                </div>
+                <div className="relative flex justify-center">
+                  <span className="bg-background px-6 text-sm sm:text-base font-mono tracking-[0.25em] text-foreground font-semibold uppercase">
+                    {d.trustedByHeading}
+                  </span>
+                </div>
+              </div>
+              <div className="flex flex-wrap justify-center items-center gap-x-12 md:gap-x-20 gap-y-12 opacity-80 mt-12">
                 {d.trustedByCompanies.map((company: any, i: number) => (
                   company?.asset?.url && (
-                    <div key={i} className="relative h-20 w-35 grayscale brightness-0 invert opacity-70 hover:opacity-100 transition-all">
+                    <div key={i} className="relative h-8 sm:h-12 w-28 sm:w-40 grayscale hover:grayscale-0 hover:scale-105 hover:opacity-100 transition-all duration-[400ms] cursor-pointer">
                       <Image 
                         src={company.asset.url} 
                         alt={company.alt || 'Trusted Partner'} 
@@ -207,7 +295,7 @@ export default async function Home() {
 
       {/* Architecture Overview Section */}
       {d.architectureLayers && d.architectureLayers.length > 0 && (
-        <section className="py-24 border-b border-border bg-gradient-to-b from-background to-secondary/10">
+        <section className="py-16 lg:py-24 border-b border-border bg-gradient-to-b from-background to-secondary/10">
           <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-[1fr_1.2fr] gap-12 lg:gap-16 items-center">
             
             {/* Left Content */}
@@ -269,33 +357,38 @@ export default async function Home() {
       )}
 
       {/* Tools Section */}
-      {/* {d.toolsList && d.toolsList.length > 0 && (
-        <section className="py-24 border-b border-border">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
+      {toolsList && toolsList.length > 0 && (
+        <section className="py-16 lg:py-24 border-b border-border bg-background relative">
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+          <div className="max-w-7xl mx-auto px-6 relative z-10">
+            <div className="grid lg:grid-cols-[1fr_1.5fr] gap-12 items-center">
               <div className="space-y-6">
                 <h2 className="text-3xl lg:text-4xl font-bold tracking-tight text-foreground">
-                  {d.toolsHeading}
+                  {d.toolsHeading || defaults.toolsHeading}
                 </h2>
                 <p className="text-lg text-muted-foreground">
-                  {d.toolsDescription}
+                  {d.toolsDescription || defaults.toolsDescription}
                 </p>
               </div>
-              <div className="flex flex-wrap gap-4 justify-start lg:justify-end">
-                {d.toolsList.map((tool: string, i: number) => (
-                  <div key={i} className="flex items-center gap-2 px-6 py-4 rounded-xl border border-primary/20 bg-primary/5 hover:bg-primary/10 transition-colors font-semibold text-lg text-foreground">
-                    <Blocks className="w-5 h-5 text-primary" />
-                    {tool}
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                {toolsList.map((tool: string, i: number) => (
+                  <div key={i} className="group flex items-center justify-center p-6 rounded-none border border-border bg-card/40 backdrop-blur-sm hover:border-primary/50 hover:bg-card/80 transition-all duration-300">
+                    <div className="flex flex-col items-center gap-3">
+                      <div className="w-2 h-2 rounded-full bg-primary/30 group-hover:bg-primary group-hover:shadow-[0_0_10px_rgba(var(--primary),0.8)] transition-all"></div>
+                      <span className="font-mono text-sm tracking-wider font-semibold text-foreground uppercase text-center block">
+                        {tool}
+                      </span>
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
           </div>
         </section>
-      )} */}
+      )}
 
       {/* Problem Section */}
-      <section className="py-24 border-b border-border">
+      <section className="py-16 lg:py-24 border-b border-border bg-background">
         <div className="max-w-7xl mx-auto px-6">
           <div className="space-y-12">
             <div className="space-y-4">
@@ -306,61 +399,24 @@ export default async function Home() {
                 {d.problemSubheading}
               </p>
             </div>
-            {d.problemCards && d.problemCards.length > 0 && (
-              <div className="grid md:grid-cols-3 gap-6">
-                {d.problemCards.map(
+            {problemCards && problemCards.length > 0 && (
+              <div className="grid md:grid-cols-3 gap-[1px] bg-border border border-border">
+                {problemCards.map(
                   (
-                    card: {
-                      stat: string
-                      title: string
-                      description: string
-                    },
+                    card: { stat: string; title: string; description: string },
                     i: number
                   ) => (
-                    <Card
+                    <div
                       key={i}
-                      className="border-border bg-secondary/30 p-8 space-y-4"
+                      className="group bg-background p-8 lg:p-10 space-y-6 hover:bg-secondary/10 transition-colors relative"
                     >
-                      <div className="text-3xl font-bold text-primary">{card.stat}</div>
-                      <h3 className="font-semibold text-foreground">
+                      <div className="absolute top-0 left-0 w-full h-[2px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500"></div>
+                      <div className="text-5xl font-mono text-primary font-light tracking-tighter">{card.stat}</div>
+                      <h3 className="font-bold text-lg text-foreground tracking-wide">
                         {card.title}
                       </h3>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-muted-foreground leading-relaxed">
                         {card.description}
-                      </p>
-                    </Card>
-                  )
-                )}
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works */}
-      <section
-        id="how"
-        className="py-24 border-b border-border bg-secondary/10"
-      >
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="space-y-16">
-            <h2 className="text-3xl lg:text-4xl font-bold tracking-tight text-foreground">
-              {d.howHeading}
-            </h2>
-            {d.howSteps && d.howSteps.length > 0 && (
-              <div className="grid lg:grid-cols-3 gap-8">
-                {d.howSteps.map(
-                  (
-                    step: { title: string; description: string },
-                    i: number
-                  ) => (
-                    <div key={i} className="space-y-4 p-6 rounded-2xl bg-background border border-border">
-                      <div className="w-12 h-12 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold text-lg mb-6">
-                        {i + 1}
-                      </div>
-                      <h3 className="text-xl font-semibold">{step.title}</h3>
-                      <p className="text-muted-foreground">
-                        {step.description}
                       </p>
                     </div>
                   )
@@ -371,36 +427,118 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Benefits Section */}
-      <section id="benefits" className="py-24 border-b border-border">
+      {/* What We Build (Scroll Experience / Sticky Stacking Cards) */}
+      <section id="what-we-build" className="pt-16 lg:pt-24 pb-24 border-b border-border bg-background">
+        <div className="max-w-4xl mx-auto px-6 space-y-12">
+          <h2 className="text-4xl lg:text-5xl font-bold tracking-tight text-foreground text-center mb-16">
+            {d.whatWeBuildHeading || defaults.whatWeBuildHeading}
+          </h2>
+          
+          <div className="relative isolate">
+             {whatWeBuildItems.map((item: any, i: number) => (
+                <div 
+                   key={i} 
+                   className="sticky group mb-24 border border-border bg-card/60 backdrop-blur-xl rounded-none shadow-2xl p-10 sm:p-14 transition-all duration-500 overflow-hidden"
+                   style={{ 
+                     top: `calc(15vh + ${i * 60}px)`, 
+                     zIndex: i,
+                     boxShadow: '0 -20px 40px -10px rgba(0,0,0,0.5)'
+                   }}
+                >
+                   {/* Decorative Terminal Accent */}
+                   <div className="absolute top-0 right-0 p-4 opacity-10 font-mono text-9xl font-black mix-blend-overlay pointer-events-none transform translate-x-4 -translate-y-6">0{i + 1}</div>
+                   
+                   <div className="relative z-10 grid gap-8">
+                      <div className="space-y-4">
+                        <div className="font-mono text-primary text-sm tracking-widest uppercase flex items-center gap-3">
+                           <span className="w-8 h-[1px] bg-primary"></span> System {i + 1}
+                        </div>
+                        <h3 className="text-3xl sm:text-4xl font-bold tracking-tight">{item.title}</h3>
+                        <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl">
+                          {item.description}
+                        </p>
+                      </div>
+
+                      {item.tags && item.tags.length > 0 && (
+                        <div className="flex flex-wrap gap-3 pt-6 border-t border-border/50">
+                          {item.tags.map((tag: string, tIndex: number) => (
+                            <span key={tIndex} className="px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-mono uppercase tracking-wider">
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                   </div>
+                </div>
+             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works (Pipeline Flow) */}
+      <section id="how" className="py-16 lg:py-24 border-b border-border bg-secondary/5 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="space-y-12">
-            <h2 className="text-3xl lg:text-4xl font-bold tracking-tight text-foreground">
+          <div className="space-y-16">
+            <div className="max-w-2xl">
+              <h2 className="text-3xl lg:text-4xl font-bold tracking-tight text-foreground">
+                {d.howHeading || defaults.howHeading}
+              </h2>
+            </div>
+            {howSteps && howSteps.length > 0 && (
+              <div className="relative border-l-2 border-border ml-6 lg:ml-[20%] space-y-12 pb-8">
+                {howSteps.map((step: { title: string; description: string }, i: number) => (
+                    <div key={i} className="relative pl-12 sm:pl-20 group">
+                      {/* Node on pipeline */}
+                      <div className="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-background border-2 border-primary group-hover:bg-primary group-hover:shadow-[0_0_15px_rgba(var(--primary),0.8)] transition-all duration-300"></div>
+                      
+                      <div className="bg-background border border-border p-8 hover:border-primary/50 transition-colors shadow-sm relative overflow-hidden">
+                        <div className="absolute top-0 right-0 p-4 font-mono text-8xl font-black text-secondary/30 pointer-events-none select-none z-0 mix-blend-overlay">0{i + 1}</div>
+                        <div className="relative z-10">
+                          <div className="font-mono text-xs text-primary mb-3 tracking-widest uppercase">Node_0{i + 1}</div>
+                          <h3 className="text-2xl font-bold tracking-tight mb-4">{step.title}</h3>
+                          <p className="text-muted-foreground text-lg leading-relaxed">
+                            {step.description}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Benefits Section */}
+      <section id="benefits" className="py-16 lg:py-24 border-b border-border bg-background">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="space-y-16">
+            <h2 className="text-3xl lg:text-4xl font-bold tracking-tight text-foreground max-w-2xl">
               {d.benefitsHeading}
             </h2>
-            {d.benefitItems && d.benefitItems.length > 0 && (
-              <div className="grid md:grid-cols-2 gap-8">
-                {d.benefitItems.map(
-                  (
-                    item: {
-                      icon?: string
-                      title: string
-                      description: string
-                    },
-                    i: number
-                  ) => {
-                    const IconComponent =
-                      iconMap[item.icon || 'trending-up'] || TrendingUp
+            {benefitItems && benefitItems.length > 0 && (
+              <div className="grid md:grid-cols-2 gap-6">
+                {benefitItems.map((item: { icon?: string; title: string; description: string }, i: number) => {
+                    const IconComponent = iconMap[item.icon || 'trending-up'] || TrendingUp
                     return (
-                      <div key={i} className="flex gap-4 p-6 rounded-2xl hover:bg-secondary/20 transition-colors">
-                        <IconComponent className="w-8 h-8 text-primary flex-shrink-0 mt-1 bg-primary/10 p-1.5 rounded-lg" />
-                        <div className="space-y-2">
-                          <h3 className="font-semibold text-lg">
-                            {item.title}
-                          </h3>
-                          <p className="text-muted-foreground">
-                            {item.description}
-                          </p>
+                      <div key={i} className="group border border-border bg-secondary/5 overflow-hidden flex flex-col hover:border-primary/40 hover:bg-secondary/10 transition-all duration-300 shadow-sm hover:shadow-[0_5px_30px_-10px_rgba(var(--primary),0.1)]">
+                        {/* Terminal Header */}
+                        <div className="flex items-center gap-2 bg-secondary/30 px-4 py-3 border-b border-border">
+                           <div className="w-2.5 h-2.5 rounded-full bg-border/80"></div>
+                           <div className="w-2.5 h-2.5 rounded-full bg-border/80"></div>
+                           <div className="w-2.5 h-2.5 rounded-full bg-border/80"></div>
+                        </div>
+                        <div className="p-8 sm:p-10 flex gap-6">
+                          <IconComponent className="w-7 h-7 text-primary flex-shrink-0 mt-1" />
+                          <div className="space-y-3">
+                            <h3 className="font-bold tracking-wide text-lg text-foreground">
+                              {item.title}
+                            </h3>
+                            <p className="text-muted-foreground leading-relaxed">
+                              {item.description}
+                            </p>
+                          </div>
                         </div>
                       </div>
                     )
@@ -412,44 +550,33 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Case Study / Social Proof */}
-      <section className="py-24 border-b border-border bg-secondary/10">
+      {/* Testimonials */}
+      <section className="py-16 lg:py-24 border-b border-border bg-secondary/5">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="space-y-8">
+          <div className="space-y-12">
             <h2 className="text-3xl lg:text-4xl font-bold tracking-tight text-foreground">
               {d.testimonialsHeading}
             </h2>
-            {d.testimonials && d.testimonials.length > 0 && (
-              <div className="grid md:grid-cols-2 gap-12">
-                {d.testimonials.map(
-                  (
-                    t: {
-                      metricLabel: string
-                      metricValue: string
-                      quote: string
-                      author: string
-                      company: string
-                    },
-                    i: number
-                  ) => (
-                    <Card
-                      key={i}
-                      className="border-border bg-background p-10 space-y-6 shadow-sm"
-                    >
-                      <div className="space-y-3">
-                        <p className="text-lg font-medium text-primary">
+            {testimonials && testimonials.length > 0 && (
+              <div className="grid md:grid-cols-2 gap-[1px] bg-border border border-border overflow-hidden rounded-sm">
+                {testimonials.map((t: any, i: number) => (
+                    <div key={i} className="bg-background p-10 md:p-14 space-y-8 flex flex-col justify-between group hover:bg-secondary/10 transition-colors">
+                      <div className="space-y-4">
+                        <p className="font-mono text-sm tracking-wider uppercase text-primary border-b border-border/50 pb-4">
                           {t.metricLabel}
                         </p>
-                        <p className="text-5xl font-extrabold tracking-tighter">{t.metricValue}</p>
+                        <p className="text-5xl lg:text-7xl font-light tracking-tighter text-foreground">{t.metricValue}</p>
                       </div>
-                      <p className="text-muted-foreground text-lg leading-relaxed italic">"{t.quote}"</p>
-                      <div className="pt-4 border-t border-border/50">
-                        <p className="font-semibold">{t.author}</p>
-                        <p className="text-sm text-muted-foreground">
+                      <blockquote className="text-muted-foreground text-xl leading-relaxed italic border-l-2 border-primary/30 pl-6">
+                        "{t.quote}"
+                      </blockquote>
+                      <div className="pt-8 mt-auto">
+                        <p className="font-mono text-sm text-foreground uppercase tracking-widest font-bold">{t.author}</p>
+                        <p className="font-mono text-xs text-muted-foreground mt-2 uppercase tracking-widest">
                           {t.company}
                         </p>
                       </div>
-                    </Card>
+                    </div>
                   )
                 )}
               </div>
@@ -459,21 +586,23 @@ export default async function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-32 border-b border-border bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-primary/10 via-background to-background relative overflow-hidden">
-        <div className="max-w-3xl mx-auto px-6 text-center space-y-8 relative z-10">
+      <section className="py-24 lg:py-32 border-b border-border bg-[url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center bg-no-repeat relative overflow-hidden">
+         {/* Dark overlay */}
+        <div className="absolute inset-0 bg-black/80 bg-[radial-gradient(circle_at_center,_transparent_0%,_rgba(0,0,0,0.8)_100%)]"></div>
+        <div className="max-w-4xl mx-auto px-6 text-center space-y-10 relative z-10">
           <div className="space-y-6">
-            <h2 className="text-4xl lg:text-6xl font-extrabold tracking-tight text-foreground">
+            <h2 className="text-4xl lg:text-6xl font-black tracking-tighter text-white drop-shadow-xl uppercase shadow-black/50">
               {d.ctaHeading}
             </h2>
-            <p className="text-xl text-muted-foreground leading-relaxed">
+            <p className="text-xl text-slate-300 leading-relaxed max-w-2xl mx-auto font-mono text-sm uppercase tracking-widest mt-4">
               {d.ctaSubheading}
             </p>
           </div>
-          <div className="flex gap-4 justify-center items-center flex-wrap pt-4">
+          <div className="flex gap-4 justify-center items-center flex-wrap pt-6">
             <Link href={d.ctaPrimaryLink || '/contact'}>
               <Button
                 size="lg"
-                className="h-14 px-8 text-lg bg-primary text-primary-foreground hover:bg-primary/90 rounded-full font-semibold shadow-lg shadow-primary/20 transition-transform hover:scale-105"
+                className="h-14 px-8 text-lg bg-primary text-primary-foreground hover:bg-white hover:text-black rounded-none font-bold shadow-[0_0_20px_rgba(var(--primary),0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.6)] transition-all uppercase tracking-widest"
               >
                 {d.ctaPrimaryText}
               </Button>

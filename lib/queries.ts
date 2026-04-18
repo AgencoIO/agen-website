@@ -245,6 +245,8 @@ export async function getHomepage() {
       problemCards,
       howHeading,
       howSteps,
+      whatWeBuildHeading,
+      whatWeBuildItems,
       benefitsHeading,
       benefitItems,
       testimonialsHeading,
