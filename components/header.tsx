@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { getNavigation } from '@/lib/queries'
+import { MobileNav } from '@/components/mobile-nav'
 
 interface NavLink {
   label: string
@@ -34,7 +35,7 @@ export async function Header({ active }: HeaderProps) {
         <Link href="/" className="text-2xl font-bold tracking-tight">
           Agenco
         </Link>
-        <div className="flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-8">
           {links.map((link) => {
             const isActive =
               active === link.href ||
@@ -53,7 +54,7 @@ export async function Header({ active }: HeaderProps) {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-muted-foreground hover:text-foreground transition"
+                  className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
                 >
                   {link.label}
                 </a>
@@ -65,9 +66,9 @@ export async function Header({ active }: HeaderProps) {
                 <a
                   key={link.href}
                   href={link.href}
-                  className={`text-sm transition ${
+                  className={`text-sm font-medium transition-colors ${
                     isActive
-                      ? 'text-foreground font-medium'
+                      ? 'text-foreground font-semibold'
                       : 'text-muted-foreground hover:text-foreground'
                   }`}
                 >
@@ -80,9 +81,9 @@ export async function Header({ active }: HeaderProps) {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`text-sm transition ${
+                className={`text-sm font-medium transition-colors ${
                   isActive
-                    ? 'text-foreground font-medium'
+                    ? 'text-foreground font-semibold'
                     : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
@@ -91,11 +92,14 @@ export async function Header({ active }: HeaderProps) {
             )
           })}
           <Link href="/contact">
-            <Button className="rounded-full font-semibold shadow-md hover:scale-105 transition-all bg-primary text-primary-foreground hover:bg-primary/90">
+            <Button className="rounded-none font-bold tracking-widest uppercase text-xs shadow-md hover:scale-105 transition-all bg-primary text-primary-foreground hover:bg-primary/90">
               Book a Consultation
             </Button>
           </Link>
         </div>
+        
+        {/* Mobile Navigation Injection */}
+        <MobileNav links={links} active={active} />
       </div>
     </nav>
   )

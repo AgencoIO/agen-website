@@ -7,8 +7,8 @@ import { Footer } from '@/components/footer'
 import { ExcludeOnPaths } from '@/components/exclude-on-paths'
 import './globals.css'
 
-const _geist = Geist({ subsets: ["latin"] });
-const _geistMono = Geist_Mono({ subsets: ["latin"] });
+const geist = Geist({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
+const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono", display: "swap" });
 
 export const metadata: Metadata = {
   title: 'Agenco | Data Infrastructure for E-Commerce',
@@ -42,9 +42,9 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body className="font-sans antialiased">
-        <div className="min-h-screen bg-background text-foreground flex flex-col">
+    <html lang="en" className={`${geist.variable} ${geistMono.variable}`}>
+      <body className="font-sans antialiased text-base leading-relaxed text-foreground bg-background">
+        <div className="min-h-screen flex flex-col">
           <Header />
           <main className="flex-1">{children}</main>
           <ExcludeOnPaths excludePaths={["/blog*"]}>

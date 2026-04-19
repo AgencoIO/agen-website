@@ -45,7 +45,13 @@ const defaults = {
 
   toolsHeading: 'Built on Modern Data Stacks',
   toolsDescription: 'We utilize the industry\'s leading technologies to ensure your data infrastructure is scalable and robust.',
-  toolsList: ['Databricks', 'Flink', 'AWS', 'Apache Spark', 'Kafka'],
+  toolsList: [
+    { name: 'Databricks',logo: '/databricks.png' }, 
+    { name: 'Flink',logo: '/flink.png' }, 
+    { name: 'AWS',logo: '/aws.png' }, 
+    { name: 'Apache Spark',logo: '/spark.png' }, 
+    { name: 'Kafka',logo: '/kafka.png' }
+  ],
 
   problemHeading: 'The E-Commerce Data Problem',
   problemSubheading:
@@ -347,17 +353,25 @@ export default async function Home() {
                   {d.toolsDescription || defaults.toolsDescription}
                 </p>
               </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                {toolsList.map((tool: string, i: number) => (
-                  <div key={i} className="group flex items-center justify-center p-6 rounded-none border border-border bg-card/40 backdrop-blur-sm hover:border-primary/50 hover:bg-card/80 transition-all duration-300">
-                    <div className="flex flex-col items-center gap-3">
-                      <div className="w-2 h-2 rounded-full bg-primary/30 group-hover:bg-primary group-hover:shadow-[0_0_10px_rgba(var(--primary),0.8)] transition-all"></div>
-                      <span className="font-mono text-sm tracking-wider font-semibold text-foreground uppercase text-center block">
-                        {tool}
-                      </span>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                {toolsList.map((tool: any, i: number) => {
+                  const logoUrl = typeof tool.logo === 'string' ? tool.logo : tool.logo?.asset?.url;
+                  
+                  return (
+                    <div key={i} className="group relative flex items-center justify-center p-6 rounded-none border border-border bg-card/40 backdrop-blur-sm hover:border-primary/50 hover:bg-card/80 transition-all duration-300">
+                      <div className="flex flex-col items-center justify-center h-full gap-4">
+                        {logoUrl && (
+                          <div className="relative w-10 h-10 grayscale group-hover:grayscale-0 transition-all duration-500">
+                            <Image src={logoUrl} alt={tool.name} fill className="object-contain" />
+                          </div>
+                        )}
+                        <span className="font-mono text-xs tracking-widest font-semibold text-foreground uppercase text-center block">
+                          {tool.name}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>

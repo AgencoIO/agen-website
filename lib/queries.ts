@@ -239,7 +239,12 @@ export async function getHomepage() {
       architectureLayers,
       toolsHeading,
       toolsDescription,
-      toolsList,
+      toolsList[] {
+        name,
+        logo {
+          asset->{ url }
+        }
+      },
       problemHeading,
       problemSubheading,
       problemCards,
