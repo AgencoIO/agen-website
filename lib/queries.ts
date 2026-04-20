@@ -194,16 +194,15 @@ export async function getPageBySlug(slug: string) {
       title,
       slug,
       description,
-      body[] {
-        ...,
-        _type == "image" => {
-          ...,
-          asset->{
-            _id,
-            url,
-            metadata { dimensions, lqip }
-          }
-        }
+      pageBuilder[] {
+        _type,
+        _key,
+        heading,
+        tagline,
+        ctaText,
+        ctaLink,
+        sectionTitle,
+        features
       }
     }`,
     { slug }

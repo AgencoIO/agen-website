@@ -5,6 +5,7 @@ import { getPageBySlug, getAllPageSlugs } from '@/lib/queries'
 import { Button } from '@/components/ui/button'
 import { PortableText } from '@portabletext/react'
 import { PortableTextComponents } from '@/components/portable-text'
+import { PageBuilder } from '@/components/page-builder'
 
 // Revalidate every 60 seconds
 export const revalidate = 60
@@ -47,28 +48,28 @@ export default async function CMSPage({ params }: PageProps) {
   return (
     <>
 
-      {/* Page Content */}
-      <article className="max-w-4xl mx-auto px-6 py-16">
-        <header className="mb-12">
-          <h1 className="text-3xl lg:text-5xl font-bold tracking-tight">
-            {page.title}
-          </h1>
-          {page.description && (
-            <p className="mt-4 text-lg text-muted-foreground max-w-2xl">
-              {page.description}
-            </p>
-          )}
-        </header>
-
-        {page.body && (
-          <div className="prose prose-lg max-w-none dark:prose-invert prose-headings:font-bold prose-headings:tracking-tight prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl">
-            <PortableText
-              value={page.body}
-              components={PortableTextComponents}
-            />
-          </div>
+      {/* Dynamic Modular Engine */}
+      <div className="w-full min-h-screen">
+        {page.pageBuilder && page.pageBuilder.length > 0 ? (
+          <PageBuilder blocks={page.pageBuilder} />
+        ) : (
+          <article className="max-w-4xl mx-auto px-6 py-16">
+            <header className="mb-12">
+              <h1 className="text-3xl lg:text-5xl font-bold tracking-tight uppercase">
+                {page.title}
+              </h1>
+              {page.description && (
+                <p className="mt-4 text-lg text-muted-foreground font-mono">
+                  {page.description}
+                </p>
+              )}
+            </header>
+            <div className="text-muted-foreground border border-border p-8 bg-card/50 text-center font-mono">
+              [SYSTEM.NULL]: This page has no assembled modules yet. Please configure the CMS.
+            </div>
+          </article>
         )}
-      </article>
+      </div>
 
     </>
   )
