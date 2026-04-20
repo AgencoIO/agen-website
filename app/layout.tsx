@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
+import Script from 'next/script'
 import { Analytics } from '@vercel/analytics/next'
 import { Header } from '@/components/header'
 import { FaqSection } from '@/components/faq-section'
@@ -43,6 +44,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${geist.variable} ${geistMono.variable}`}>
+      <head>
+        {/* Google Analytics Tag */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-MX6RBM1S18"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-MX6RBM1S18');
+          `}
+        </Script>
+      </head>
       <body className="font-sans antialiased text-base leading-relaxed text-foreground bg-background">
         <div className="min-h-screen flex flex-col">
           <Header />
