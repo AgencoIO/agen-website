@@ -33,7 +33,7 @@ export function HeroModule({ data }: { data: any }) {
             {data.heading || "Hero Module"}
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed mb-10 max-w-2xl">
-            {data.subheading || "Configure this module in the CMS."}
+            {data.tagline || "Configure this module in the CMS."}
           </p>
           <div className="flex flex-wrap gap-4">
             {data.ctaText && (

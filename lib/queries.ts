@@ -195,14 +195,8 @@ export async function getPageBySlug(slug: string) {
       slug,
       description,
       pageBuilder[] {
-        _type,
-        _key,
-        heading,
-        tagline,
-        ctaText,
-        ctaLink,
-        sectionTitle,
-        features
+        ...,
+        promotion->
       }
     }`,
     { slug }
