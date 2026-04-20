@@ -8,21 +8,30 @@ export function HeroModule({ data }: { data: any }) {
       {!hasBg ? (
         <div className="absolute inset-0 opacity-20 bg-[radial-gradient(#333_1px,transparent_1px)] [background-size:16px_16px]"></div>
       ) : (
-        <div className="absolute inset-0 z-0 bg-background">
+        <div className="absolute inset-0 z-0">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img 
             src={data.bgImageUrl} 
             alt="Hero Background" 
-            className="w-full h-full object-cover opacity-40 grayscale mix-blend-luminosity" 
+            className="w-full h-full object-cover select-none object-center" 
           />
-          {/* A brutalist overlay to ensure text contrast remains high */}
-          <div className="absolute inset-0 bg-background/60 backdrop-blur-[2px]"></div>
-          {/* Bring back a faint grid over the image */}
-          <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px] mix-blend-overlay"></div>
+          
+          {/* Pro Max Aesthetic Gradient Overlays */}
+          {/* 1. Primary horizontal fade: Solid near the text, dissolving smoothly to the right */}
+          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/90 to-background/5 sm:to-transparent"></div>
+          
+          {/* 2. Secondary vertical fade: Ensures any overflowing text downward remains legible */}
+          <div className="absolute inset-0 bg-gradient-to-t from-background/30 via-transparent to-transparent"></div>
+          
+          {/* 3. Base wash: A very subtle global dimming to prevent bright spots in the image from breaking UI contrast */}
+          <div className="absolute inset-0 bg-foreground/5 backdrop-blur-[1px]"></div>
+          
+          {/* 4. Deep Tech Grid: Super subtle pattern over the image to maintain the data engineering vibe */}
+          <div className="absolute inset-0 opacity-[0.05] bg-[radial-gradient(currentColor_1px,transparent_1px)] [background-size:24px_24px]"></div>
         </div>
       )}
 
-      <div className="max-w-7xl mx-auto relative z-10">
+      <div className="max-w-5xl mx-auto relative z-10">
         <div className="max-w-3xl">
           {data.badge && (
             <div className="inline-flex items-center px-3 py-1 mb-6 border border-primary/30 bg-primary/10 text-primary font-mono text-sm uppercase tracking-wider">

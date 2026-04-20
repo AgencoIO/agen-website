@@ -5,6 +5,7 @@ import { CallToAction } from './modules/call-to-action'
 import { GalleryModule } from './modules/gallery-module'
 import { FormModule } from './modules/form-module'
 import { VideoModule } from './modules/video-module'
+import { HeroStatsModule } from './modules/hero-stats-module'
 
 const componentsMap: any = {
   heroModule: HeroModule,
@@ -14,6 +15,7 @@ const componentsMap: any = {
   gallery: GalleryModule,
   form: FormModule,
   video: VideoModule,
+  heroStatsModule: HeroStatsModule,
 }
 
 export function PageBuilder({ blocks }: { blocks: any[] }) {
