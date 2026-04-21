@@ -1,5 +1,5 @@
 export function HeroModule({ data }: { data: any }) {
-  const hasBg = !!data.bgImageUrl
+  const hasBg = !!data.bgImage?.asset?.url
 
   return (
     <section className="w-full px-4 md:px-8 py-32 bg-background border-b border-border relative overflow-hidden">
@@ -11,7 +11,7 @@ export function HeroModule({ data }: { data: any }) {
         <div className="absolute inset-0 z-0">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img 
-            src={data.bgImageUrl} 
+            src={data.bgImage.asset.url} 
             alt="Hero Background" 
             className="w-full h-full object-cover select-none object-center" 
           />

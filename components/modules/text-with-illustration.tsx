@@ -26,10 +26,10 @@ export function TextWithIllustration({ data }: { data: any }) {
           <div className="flex-1 min-h-[400px] border border-border bg-card/20 relative group overflow-hidden flex items-center justify-center p-8">
             <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
             
-            {data.imageUrl ? (
+            {data.image?.asset?.url ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img 
-                src={data.imageUrl} 
+                src={data.image.asset.url} 
                 alt={data.heading || "Illustration"} 
                 className="relative z-10 w-full h-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-700" 
               />

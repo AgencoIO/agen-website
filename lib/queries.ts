@@ -199,7 +199,10 @@ export async function getPageBySlug(slug: string) {
       description,
       pageBuilder[] {
         ...,
-        promotion->
+        promotion->,
+        bgImage { asset->{ _id, url } },
+        image { asset->{ _id, url } },
+        images[] { asset->{ _id, url } }
       }
     }`,
     { slug }

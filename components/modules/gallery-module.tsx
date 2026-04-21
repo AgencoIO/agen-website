@@ -16,7 +16,10 @@ export function GalleryModule({ data }: { data: any }) {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {data.images.map((url: string, idx: number) => (
+          {data.images.map((item: any, idx: number) => {
+            const url = item?.asset?.url
+            if (!url) return null
+            return (
             <div 
               key={idx} 
               className="group relative aspect-video border border-border bg-card overflow-hidden"
@@ -34,7 +37,8 @@ export function GalleryModule({ data }: { data: any }) {
                 INDEX_{idx.toString().padStart(2, '0')}
               </div>
             </div>
-          ))}
+            )
+          })}
         </div>
       </div>
     </section>
