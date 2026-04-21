@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { getNavigation } from '@/lib/queries'
+import { getNavigation, getSiteSettings } from '@/lib/queries'
 
 interface FooterLink {
   label: string
@@ -13,7 +13,6 @@ interface FooterProps {
   tagline?: string
 }
 
-// Default fallback links
 const defaultFooterLinks: FooterLink[] = [
   { label: 'About', href: '/about' },
   { label: 'Blog', href: '/blog' },
@@ -21,15 +20,33 @@ const defaultFooterLinks: FooterLink[] = [
   { label: 'Careers', href: '/careers' },
 ]
 
+const defaultProductLinks: FooterLink[] = [
+  { label: 'Data Pipelines', href: '#' },
+  { label: 'Analytics', href: '#' },
+  { label: 'Marketplace Data', href: '#' },
+]
+
 export async function Footer({
-  contactEmail = 'hello@agenco.io',
-  tagline = 'Data infrastructure for e-commerce brands.',
-}: FooterProps) {
-  const nav = await getNavigation()
+  contactEmail: propContactEmail,
+  tagline: propTagline,
+}: FooterProps = {}) {
+  const [nav, settings] = await Promise.all([
+    getNavigation(),
+    getSiteSettings()
+  ])
+
+  const contactEmail = settings?.contactEmail || propContactEmail || 'hello@agenco.io'
+  const tagline = settings?.tagline || propTagline || 'Data infrastructure for e-commerce brands.'
+
   const companyLinks: FooterLink[] =
     nav?.footerLinks && nav.footerLinks.length > 0
       ? nav.footerLinks
       : defaultFooterLinks
+
+  const productLinks: FooterLink[] =
+    nav?.productLinks && nav.productLinks.length > 0
+      ? nav.productLinks
+      : defaultProductLinks
 
   return (
     <footer className="border-t border-border py-12 bg-secondary/5">
@@ -42,21 +59,16 @@ export async function Footer({
           <div>
             <p className="font-semibold text-sm mb-4">Product</p>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>
-                <a href="#" className="hover:text-foreground transition">
-                  Data Pipelines
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-foreground transition">
-                  Analytics
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-foreground transition">
-                  Marketplace Data
-                </a>
-              </li>
+              {productLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="hover:text-foreground transition"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
           <div>

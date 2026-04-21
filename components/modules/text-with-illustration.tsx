@@ -7,10 +7,10 @@ export function TextWithIllustration({ data }: { data: any }) {
         <div className={`flex flex-col gap-12 lg:gap-16 ${isLeft ? 'lg:flex-row-reverse' : 'lg:flex-row'} items-stretch`}>
           
           <div className="flex-1 flex flex-col justify-center">
-            <div className="mb-6 inline-flex items-center gap-2 text-primary font-mono text-xs uppercase tracking-widest">
+            {/* <div className="mb-6 inline-flex items-center gap-2 text-primary font-mono text-xs uppercase tracking-widest">
               <span className="w-2 h-2 bg-primary animate-pulse"></span>
               {data._type.toUpperCase()} / DATA_BLOCK
-            </div>
+            </div> */}
             {data.heading && (
               <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground uppercase mb-6 drop-shadow-sm border-l-4 border-primary pl-6">
                 {data.heading}
@@ -39,10 +39,10 @@ export function TextWithIllustration({ data }: { data: any }) {
               </div>
             )}
             
-            <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-border bg-background/80 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity flex justify-between font-mono text-xs text-muted-foreground">
+            {/* <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-border bg-background/80 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity flex justify-between font-mono text-xs text-muted-foreground">
               <span>IMG // {data.imageUrl ? data.imageUrl.split('/').pop() : 'placeholder.png'}</span>
               <span>100% SCALE</span>
-            </div>
+            </div> */}
           </div>
 
         </div>

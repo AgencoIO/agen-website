@@ -173,13 +173,10 @@ export async function getAuthorBySlug(slug: string) {
 export async function getSiteSettings() {
   return client.fetch(
     `*[_type == "siteSettings"][0] {
-      title,
-      description,
+      ...,
       ogImage {
         asset->{ _id, url }
-      },
-      socialLinks,
-      footer
+      }
     }`
   )
 }
@@ -290,6 +287,10 @@ export async function getNavigation() {
         openInNewTab
       },
       footerLinks[] {
+        label,
+        href
+      },
+      productLinks[] {
         label,
         href
       }
