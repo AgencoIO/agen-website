@@ -176,6 +176,12 @@ export async function getSiteSettings() {
       ...,
       ogImage {
         asset->{ _id, url }
+      },
+      logo {
+        asset->{ _id, url }
+      },
+      favicon {
+        asset->{ _id, url }
       }
     }`
   )

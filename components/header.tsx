@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { getNavigation } from '@/lib/queries'
+import { getNavigation, getSiteSettings } from '@/lib/queries'
 import { MobileNav } from '@/components/mobile-nav'
 
 interface NavLink {
@@ -23,7 +23,10 @@ const defaultLinks: NavLink[] = [
 ]
 
 export async function Header({ active }: HeaderProps) {
-  const nav = await getNavigation()
+  const [nav, settings] = await Promise.all([
+    getNavigation(),
+    getSiteSettings()
+  ])
   const links: NavLink[] =
     nav?.headerLinks && nav.headerLinks.length > 0
       ? nav.headerLinks
@@ -32,8 +35,13 @@ export async function Header({ active }: HeaderProps) {
   return (
     <nav className="border-b border-border sticky top-0 z-50 bg-background/95 backdrop-blur">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-        <Link href="/" className="text-2xl font-bold tracking-tight">
-          Agenco
+        <Link href="/" className="text-2xl font-bold tracking-tight inline-flex items-center">
+          {settings?.logo?.asset?.url ? (
+            /* eslint-disable-next-line @next/next/no-img-element */
+            <img src={settings.logo.asset.url} alt="Agenco Logo" className="h-8 w-auto object-contain" />
+          ) : (
+            "Agenco"
+          )}
         </Link>
         <div className="hidden md:flex items-center gap-8">
           {links.map((link) => {

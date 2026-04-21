@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import Script from 'next/script'
 import { Analytics } from '@vercel/analytics/next'
+import { getSiteSettings } from '@/lib/queries'
 import { Header } from '@/components/header'
 import { FaqSection } from '@/components/faq-section'
 import { Footer } from '@/components/footer'
@@ -11,27 +12,31 @@ import './globals.css'
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono", display: "swap" });
 
-export const metadata: Metadata = {
-  title: 'Agenco | Data Infrastructure for E-Commerce',
-  description: 'Transform fragmented e-commerce data into competitive advantage. Custom data pipelines, inventory analytics, and competitor intelligence for Shopify founders and D2C brands.',
-  generator: 'v0.app',
-  icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
-    apple: '/apple-icon.png',
-  },
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettings()
+
+  return {
+    title: settings?.title || 'Agenco | Data Infrastructure for E-Commerce',
+    description: settings?.description || 'Transform fragmented e-commerce data into competitive advantage. Custom data pipelines, inventory analytics, and competitor intelligence for Shopify founders and D2C brands.',
+    generator: 'v0.app',
+    icons: {
+      icon: settings?.favicon?.asset?.url || [
+        {
+          url: '/icon-light-32x32.png',
+          media: '(prefers-color-scheme: light)',
+        },
+        {
+          url: '/icon-dark-32x32.png',
+          media: '(prefers-color-scheme: dark)',
+        },
+        {
+          url: '/icon.svg',
+          type: 'image/svg+xml',
+        },
+      ],
+      apple: '/apple-icon.png',
+    },
+  }
 }
 
 // Revalidate layout-level data every 60 seconds
