@@ -199,6 +199,11 @@ export async function getPageBySlug(slug: string) {
       description,
       pageBuilder[] {
         ...,
+        _type == "callToAction" => {
+          ...,
+          promotion->,
+          image { asset->{ _id, url } }
+        },
         promotion->,
         bgImage { asset->{ _id, url } },
         image { asset->{ _id, url } },
@@ -261,6 +266,8 @@ export async function getHomepage() {
       ctaPrimaryLink,
       ctaSecondaryText,
       ctaSecondaryLink,
+      ctaImage { asset->{ _id, url } },
+      ctaImageAlignment,
       footerTagline,
       contactEmail
     }`

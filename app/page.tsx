@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { ArrowRight, Zap, TrendingUp, Layers, Shield, Target, BarChart, Database, Network, Cpu, LayoutGrid, ServerCog, Blocks } from 'lucide-react'
 import { getHomepage } from '@/lib/queries'
+import { CallToAction } from '@/components/modules/call-to-action'
 
 // Revalidate every 60 seconds
 export const revalidate = 60
@@ -577,30 +578,14 @@ export default async function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 lg:py-32 border-b border-border bg-[url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center bg-no-repeat relative overflow-hidden">
-         {/* Dark overlay */}
-        <div className="absolute inset-0 bg-black/80 bg-[radial-gradient(circle_at_center,_transparent_0%,_rgba(0,0,0,0.8)_100%)]"></div>
-        <div className="max-w-4xl mx-auto px-6 text-center space-y-10 relative z-10">
-          <div className="space-y-6">
-            <h2 className="text-4xl lg:text-6xl font-black tracking-tighter text-white drop-shadow-xl uppercase shadow-black/50">
-              {d.ctaHeading}
-            </h2>
-            <p className="text-xl text-slate-300 leading-relaxed max-w-2xl mx-auto font-mono text-sm uppercase tracking-widest mt-4">
-              {d.ctaSubheading}
-            </p>
-          </div>
-          <div className="flex gap-4 justify-center items-center flex-wrap pt-6">
-            <Link href={d.ctaPrimaryLink || '/contact'}>
-              <Button
-                size="lg"
-                className="h-14 px-8 text-lg bg-primary text-primary-foreground hover:bg-white hover:text-black rounded-none font-bold shadow-[0_0_20px_rgba(var(--primary),0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.6)] transition-all uppercase tracking-widest"
-              >
-                {d.ctaPrimaryText}
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
+      <CallToAction data={{
+        heading: d.ctaHeading,
+        subheading: d.ctaSubheading,
+        buttonText: d.ctaPrimaryText,
+        buttonLink: d.ctaPrimaryLink,
+        image: d.ctaImage,
+        imageAlignment: d.ctaImageAlignment || 'background'
+      }} />
     </>
   )
 }
