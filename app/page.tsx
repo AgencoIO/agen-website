@@ -196,7 +196,7 @@ export default async function Home() {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative overflow-hidden isolate max-w-full mx-auto px-4 sm:px-6 pt-24 pb-16 lg:pt-32 lg:pb-24 border-b border-border bg-background">
+      <section className="relative overflow-hidden isolate max-w-full mx-auto px-4 sm:px-6 pt-20 pb-10 lg:pt-24 lg:pb-12 border-b border-border bg-background">
         
         {/* Advanced Data Grid CSS Background */}
         <div className="absolute inset-0 -z-20 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:48px_48px]">
@@ -204,46 +204,30 @@ export default async function Home() {
           <div className="absolute inset-x-0 bottom-0 h-[40%] bg-gradient-to-t from-background to-transparent pointer-events-none"></div>
         </div>
 
-        <div className="max-w-6xl mx-auto space-y-10 relative z-10 text-center flex flex-col items-center">
+        <div className="max-w-6xl mx-auto space-y-6 relative z-10 text-center flex flex-col items-center">
           
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black tracking-tighter text-foreground text-balance drop-shadow-sm leading-[1.1]">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black tracking-tighter text-foreground text-balance drop-shadow-sm leading-[1.1]">
             {d.heroHeading}
           </h1>
           
-          <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground/90 max-w-3xl text-balance leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground/90 max-w-3xl text-balance leading-relaxed">
             {d.heroSubheading}
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-5 pt-8 w-full sm:w-auto px-4 sm:px-0">
+          <div className="flex flex-col sm:flex-row gap-4 pt-4 w-full sm:w-auto px-4 sm:px-0">
             <Link href={d.heroPrimaryCtaLink || '/contact'} className="w-full sm:w-auto">
-              <Button size="lg" className="w-full sm:w-auto h-14 md:h-16 px-10 text-sm md:text-base font-mono tracking-widest uppercase bg-primary text-primary-foreground hover:bg-primary/90 rounded-none border border-primary shadow-[0_0_20px_rgba(var(--primary),0.15)] hover:shadow-[0_0_35px_rgba(var(--primary),0.4)] transition-all duration-300 group">
+              <Button size="lg" className="w-full sm:w-auto h-12 md:h-14 px-8 text-sm font-mono tracking-widest uppercase bg-primary text-primary-foreground hover:bg-primary/90 rounded-none border border-primary shadow-[0_0_20px_rgba(var(--primary),0.15)] hover:shadow-[0_0_35px_rgba(var(--primary),0.4)] transition-all duration-300 group">
                 {d.heroPrimaryCta} 
-                <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-1.5 transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]" />
+                <ArrowRight className="w-4 h-4 ml-3 group-hover:translate-x-1.5 transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]" />
               </Button>
             </Link>
             
             {d.heroSecondaryCta && (
-              <Button size="lg" variant="outline" className="w-full sm:w-auto h-14 md:h-16 px-10 text-sm md:text-base font-mono tracking-widest uppercase rounded-none border-border bg-background/50 backdrop-blur-sm hover:bg-muted/50 hover:text-foreground transition-all duration-300">
+              <Button size="lg" variant="outline" className="w-full sm:w-auto h-12 md:h-14 px-8 text-sm font-mono tracking-widest uppercase rounded-none border-border bg-background/50 backdrop-blur-sm hover:bg-muted/50 hover:text-foreground transition-all duration-300">
                 {d.heroSecondaryCta}
               </Button>
             )}
           </div>
-
-          {/* Hero Stats */}
-          {heroStats && heroStats.length > 0 && (
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-4xl pt-20 mt-4">
-               {heroStats.map((stat: any, i: number) => (
-                 <div key={i} className="flex flex-col gap-2 border-t border-border pt-6 text-center hover:border-primary/50 transition-colors duration-300 cursor-default group">
-                    <span className="text-3xl md:text-4xl font-black font-mono tracking-tight text-foreground group-hover:text-primary transition-colors">
-                      {stat.value}
-                    </span>
-                    <span className="text-xs md:text-sm font-mono tracking-widest uppercase text-muted-foreground/80">
-                      {stat.label}
-                    </span>
-                 </div>
-               ))}
-            </div>
-          )}
 
           {/* Trusted Companies */}
           {d.trustedByCompanies && d.trustedByCompanies.length > 0 && (
@@ -274,6 +258,24 @@ export default async function Home() {
               </div>
             </div>
           )}
+
+          {/* Hero Stats */}
+          {heroStats && heroStats.length > 0 && (
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-4xl pt-10 mt-2">
+               {heroStats.map((stat: any, i: number) => (
+                 <div key={i} className="flex flex-col gap-1 border-t border-border pt-4 text-center hover:border-primary/50 transition-colors duration-300 cursor-default group">
+                    <span className="text-2xl md:text-3xl font-black font-mono tracking-tight text-foreground group-hover:text-primary transition-colors">
+                      {stat.value}
+                    </span>
+                    <span className="text-xs font-mono tracking-widest uppercase text-muted-foreground/80">
+                      {stat.label}
+                    </span>
+                 </div>
+               ))}
+            </div>
+          )}
+
+          
         </div>
       </section>
 
