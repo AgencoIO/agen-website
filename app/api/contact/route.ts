@@ -5,6 +5,9 @@ const RECIPIENTS = (process.env.CONTACT_FORM_RECIPIENTS || '')
   .map((e) => e.trim())
   .filter(Boolean)
 
+const HUBSPOT_PORTAL_ID = process.env.NEXT_PUBLIC_HUBSPOT_PORTAL_ID || '245998003'
+const HUBSPOT_FORM_ID = process.env.NEXT_PUBLIC_HUBSPOT_FORM_ID || '10eaea32-0ab0-4e56-8c21-d34be6ed7535'
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
@@ -27,6 +30,44 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // --- HubSpot Forms API Submission ---
+    try {
+      const nameParts = name.trim().split(' ')
+      const firstname = nameParts[0]
+      const lastname = nameParts.length > 1 ? nameParts.slice(1).join(' ') : ''
+
+      const hubspotPayload = {
+        fields: [
+          { name: 'email', value: email },
+          { name: 'firstname', value: firstname },
+          { name: 'lastname', value: lastname },
+          { name: 'company', value: company || '' },
+          { name: 'phone', value: phone || '' },
+          { name: 'message', value: message || '' },
+          { name: 'service_interest', value: service || '' } // Custom mapping, might be ignored if property doesn't exist, but good to try
+        ],
+        context: {
+          pageUri: request.headers.get('referer') || 'https://www.agenco.io/contact',
+          pageName: 'Agenco Contact Page'
+        }
+      }
+
+      await fetch(
+        `https://api.hsforms.com/submissions/v3/integration/submit/${HUBSPOT_PORTAL_ID}/${HUBSPOT_FORM_ID}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(hubspotPayload),
+        }
+      )
+    } catch (hsError) {
+      console.error('Failed to submit to HubSpot:', hsError)
+      // Continue anyway so user at least gets an email
+    }
+
+    // --- Email Notification ---
     const RESEND_API_KEY = process.env.RESEND_API_KEY
 
     if (!RESEND_API_KEY) {
