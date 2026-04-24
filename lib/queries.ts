@@ -82,6 +82,10 @@ export async function getPostBySlug(slug: string) {
         title,
         slug,
         color
+      },
+      callToActions[] {
+        ...,
+        image { asset->{ _id, url } }
       }
     }`,
     { slug }
@@ -201,7 +205,6 @@ export async function getPageBySlug(slug: string) {
         ...,
         _type == "callToAction" => {
           ...,
-          promotion->,
           image { asset->{ _id, url } }
         },
         promotion->,
@@ -268,6 +271,10 @@ export async function getHomepage() {
       ctaSecondaryLink,
       ctaImage { asset->{ _id, url } },
       ctaImageAlignment,
+      callToActions[] {
+        ...,
+        image { asset->{ _id, url } }
+      },
       footerTagline,
       contactEmail
     }`
@@ -286,7 +293,11 @@ export async function getContactPage() {
       formDescription,
       contactInfo,
       successMessage,
-      calendlyLink
+      calendlyLink,
+      callToActions[] {
+        ...,
+        image { asset->{ _id, url } }
+      }
     }`
   )
 }

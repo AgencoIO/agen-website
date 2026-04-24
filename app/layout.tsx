@@ -74,6 +74,13 @@ export default function RootLayout({
           <Footer />
         </div>
         {process.env.NODE_ENV === 'production' && <Analytics />}
+        {/* Start of HubSpot Embed Code */}
+        <Script
+          id="hs-script-loader"
+          src="//js-na2.hs-scripts.com/245998003.js"
+          strategy="afterInteractive"
+        />
+        {/* End of HubSpot Embed Code */}
       </body>
     </html>
   )

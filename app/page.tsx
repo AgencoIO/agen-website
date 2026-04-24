@@ -585,9 +585,16 @@ export default async function Home() {
         subheading: d.ctaSubheading,
         buttonText: d.ctaPrimaryText,
         buttonLink: d.ctaPrimaryLink,
+        secondaryButtonText: d.ctaSecondaryText,
+        secondaryButtonLink: d.ctaSecondaryLink,
         image: d.ctaImage,
         imageAlignment: d.ctaImageAlignment || 'background'
       }} />
+
+      {/* Dynamic CTA Sections */}
+      {d.callToActions?.map((cta: any, idx: number) => (
+        <CallToAction key={idx} data={cta} />
+      ))}
     </>
   )
 }

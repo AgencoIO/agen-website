@@ -23,13 +23,13 @@ export function CallToAction({ data }: { data: any }) {
           </div>
           
           {data.heading && (
-            <h2 className="text-3xl md:text-5xl font-black tracking-tighter text-primary-foreground uppercase mb-6 mix-blend-difference drop-shadow-md">
+            <h2 className="text-2xl md:text-4xl lg:text-5xl font-black tracking-tighter text-primary-foreground uppercase mb-4 mix-blend-difference drop-shadow-md">
               {data.heading}
             </h2>
           )}
           
           {data.subheading && (
-            <p className="text-lg md:text-xl text-primary-foreground/90 leading-relaxed mb-10 max-w-2xl font-medium">
+            <p className="text-base md:text-lg text-primary-foreground/90 leading-relaxed mb-8 max-w-2xl font-medium">
               {data.subheading}
             </p>
           )}
@@ -38,10 +38,18 @@ export function CallToAction({ data }: { data: any }) {
             {data.buttonText && (
               <a 
                 href={data.buttonLink || "#"} 
-                className="group inline-flex items-center justify-center px-8 py-4 bg-background text-primary font-mono font-bold text-base uppercase tracking-widest hover:bg-neutral-100 transition-all shadow-[0_0_20px_rgba(0,0,0,0.5)]"
+                className="group inline-flex items-center justify-center px-6 py-3 sm:px-8 sm:py-4 bg-background text-primary font-mono font-bold text-sm uppercase tracking-widest hover:bg-neutral-100 transition-all shadow-[0_0_15px_rgba(0,0,0,0.5)]"
               >
                 <span>{data.buttonText}</span>
                 <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform" />
+              </a>
+            )}
+            {data.secondaryButtonText && (
+              <a 
+                href={data.secondaryButtonLink || "#"} 
+                className="group inline-flex items-center justify-center px-6 py-3 sm:px-8 sm:py-4 border border-background text-background hover:bg-background/10 font-mono font-bold text-sm uppercase tracking-widest transition-all"
+              >
+                <span>{data.secondaryButtonText}</span>
               </a>
             )}
           </div>
@@ -72,26 +80,36 @@ export function CallToAction({ data }: { data: any }) {
             </div>
             
             {data.heading && (
-              <h2 className="text-3xl md:text-5xl font-bold tracking-tighter text-foreground uppercase mb-4 max-w-2xl">
+              <h2 className="text-2xl md:text-4xl font-bold tracking-tighter text-foreground uppercase mb-4 max-w-2xl">
                 {data.heading}
               </h2>
             )}
             
             {data.subheading && (
-              <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-xl mb-8">
+              <p className="text-sm md:text-base text-muted-foreground leading-relaxed max-w-xl mb-6">
                 {data.subheading}
               </p>
             )}
             
-            {data.buttonText && (
-              <div className="flex flex-col sm:flex-row gap-4 items-start">
-                <a 
-                  href={data.buttonLink || "#"} 
-                  className="group inline-flex items-center justify-center px-6 py-3 bg-primary text-primary-foreground font-mono font-bold text-sm uppercase tracking-widest hover:bg-primary/90 transition-colors"
-                >
-                  <span>{data.buttonText}</span>
-                  <ArrowRight className="w-4 h-4 ml-3 group-hover:translate-x-1 transition-transform" />
-                </a>
+            {(data.buttonText || data.secondaryButtonText) && (
+              <div className="flex flex-col sm:flex-row gap-4 items-start pt-2">
+                {data.buttonText && (
+                  <a 
+                    href={data.buttonLink || "#"} 
+                    className="group inline-flex items-center justify-center px-5 py-2.5 bg-primary text-primary-foreground font-mono font-bold text-xs md:text-sm uppercase tracking-widest hover:bg-primary/90 transition-colors shadow-sm"
+                  >
+                    <span>{data.buttonText}</span>
+                    <ArrowRight className="w-4 h-4 ml-3 group-hover:translate-x-1 transition-transform" />
+                  </a>
+                )}
+                {data.secondaryButtonText && (
+                  <a 
+                    href={data.secondaryButtonLink || "#"} 
+                    className="group inline-flex items-center justify-center px-5 py-2.5 border border-primary text-primary font-mono font-bold text-xs md:text-sm uppercase tracking-widest hover:bg-primary/5 transition-colors"
+                  >
+                    <span>{data.secondaryButtonText}</span>
+                  </a>
+                )}
               </div>
             )}
           </div>
