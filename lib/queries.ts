@@ -230,20 +230,39 @@ export async function getAllPageSlugs() {
 export async function getHomepage() {
   return client.fetch(
     `*[_type == "homepage"][0] {
+      disableHero,
       heroHeading,
       heroSubheading,
       heroPrimaryCta,
       heroPrimaryCtaLink,
       heroSecondaryCta,
       heroStats,
+      disableTrustedBy,
       trustedByHeading,
       trustedByCompanies[] {
         asset->{ _id, url },
         alt
       },
+      disablePipeline,
+      dataFlowPipeline {
+        sectionTitle,
+        sectionDescription,
+        badgeLabel,
+        sources,
+        processingSteps,
+        destinations,
+        dashboardTitle,
+        dashboardProductName,
+        dashboardProductSku,
+        dashboardYourPrice,
+        dashboardCompetitorAvg,
+        dashboardRecommendation
+      },
+      disableArchitecture,
       architectureHeading,
       architectureSubheading,
       architectureLayers,
+      disableTools,
       toolsHeading,
       toolsDescription,
       toolsList[] {
@@ -252,17 +271,23 @@ export async function getHomepage() {
           asset->{ url }
         }
       },
+      disableProblem,
       problemHeading,
       problemSubheading,
       problemCards,
+      disableHowItWorks,
       howHeading,
       howSteps,
+      disableWhatWeBuild,
       whatWeBuildHeading,
       whatWeBuildItems,
+      disableBenefits,
       benefitsHeading,
       benefitItems,
+      disableTestimonials,
       testimonialsHeading,
       testimonials,
+      disableCta,
       ctaHeading,
       ctaSubheading,
       ctaPrimaryText,

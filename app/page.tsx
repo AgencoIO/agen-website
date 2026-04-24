@@ -5,6 +5,7 @@ import { Card } from '@/components/ui/card'
 import { ArrowRight, Zap, TrendingUp, Layers, Shield, Target, BarChart, Database, Network, Cpu, LayoutGrid, ServerCog, Blocks } from 'lucide-react'
 import { getHomepage } from '@/lib/queries'
 import { CallToAction } from '@/components/modules/call-to-action'
+import { DataFlowPipeline } from '@/components/modules/data-flow-pipeline'
 
 // Revalidate every 60 seconds
 export const revalidate = 60
@@ -35,7 +36,14 @@ const defaults = {
   ],
   trustedByHeading: 'TRUSTED BY LEADING COMPANIES',
   trustedByCompanies: [],
-  
+  dataFlowPipeline: {
+    sectionTitle: 'Intelligent Data Flow',
+    sectionDescription: 'Fragmented sources unified into actionable intelligence — in real time.',
+    badgeLabel: 'Pipeline Architecture',
+    sources: ['APIs / Webhooks', 'Web Scraping', 'CDC Streams'],
+    processingSteps: ['Data Cleaning', 'Transformation', 'Enrichment'],
+    destinations: ['Data Lake (S3)', 'Search Analytics', 'Client Databases'],
+  },
   architectureHeading: 'How Agenco Meets Engineering Excellence',
   architectureSubheading: 'We build scalable, enterprise-grade data infrastructure designed for high velocity and intelligent applications. Transform fragmented data streams into a unified, actionable foundation.',
   architectureLayers: [
@@ -175,6 +183,7 @@ export default async function Home() {
     ...defaults,
     ...cmsData,
     trustedByCompanies: cmsData.trustedByCompanies ?? defaults.trustedByCompanies,
+    dataFlowPipeline: cmsData.dataFlowPipeline ?? defaults.dataFlowPipeline,
     heroStats: cmsData.heroStats ?? defaults.heroStats,
     architectureLayers: cmsData.architectureLayers ?? defaults.architectureLayers,
     toolsList: cmsData.toolsList ?? defaults.toolsList,
@@ -196,7 +205,8 @@ export default async function Home() {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative overflow-hidden isolate max-w-full mx-auto px-4 sm:px-6 pt-20 pb-10 lg:pt-24 lg:pb-12 border-b border-border bg-background">
+      {!d.disableHero && (
+        <section className="relative overflow-hidden isolate max-w-full mx-auto px-4 sm:px-6 pt-20 pb-10 lg:pt-24 lg:pb-12 border-b border-border bg-background">
         
         {/* Advanced Data Grid CSS Background */}
         <div className="absolute inset-0 -z-20 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:48px_48px]">
@@ -230,7 +240,7 @@ export default async function Home() {
           </div>
 
           {/* Trusted Companies */}
-          {d.trustedByCompanies && d.trustedByCompanies.length > 0 && (
+          {!d.disableTrustedBy && d.trustedByCompanies && d.trustedByCompanies.length > 0 && (
             <div className="w-full max-w-5xl pt-16 mt-8">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center" aria-hidden="true">
@@ -278,9 +288,13 @@ export default async function Home() {
           
         </div>
       </section>
+      )}
+
+      {/* ─── Data Flow Pipeline ─── */}
+      {!d.disablePipeline && <DataFlowPipeline data={d.dataFlowPipeline} />}
 
       {/* Architecture Overview Section */}
-      {d.architectureLayers && d.architectureLayers.length > 0 && (
+      {!d.disableArchitecture && d.architectureLayers && d.architectureLayers.length > 0 && (
         <section className="py-16 lg:py-24 border-b border-border bg-gradient-to-b from-background to-secondary/10">
           <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-[1fr_1.2fr] gap-12 lg:gap-16 items-center">
             
@@ -343,7 +357,7 @@ export default async function Home() {
       )}
 
       {/* Tools Section */}
-      {toolsList && toolsList.length > 0 && (
+      {!d.disableTools && toolsList && toolsList.length > 0 && (
         <section className="py-16 lg:py-24 border-b border-border bg-background relative">
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
           <div className="max-w-7xl mx-auto px-6 relative z-10">
@@ -382,7 +396,8 @@ export default async function Home() {
       )}
 
       {/* Problem Section */}
-      <section className="py-16 lg:py-24 border-b border-border bg-background">
+      {!d.disableProblem && (
+        <section className="py-16 lg:py-24 border-b border-border bg-background">
         <div className="max-w-7xl mx-auto px-6">
           <div className="space-y-12">
             <div className="space-y-4">
@@ -420,9 +435,11 @@ export default async function Home() {
           </div>
         </div>
       </section>
+      )}
 
       {/* What We Build (Scroll Experience / Sticky Stacking Cards) */}
-      <section id="what-we-build" className="pt-16 lg:pt-24 pb-24 border-b border-border bg-background">
+      {!d.disableWhatWeBuild && (
+        <section id="what-we-build" className="pt-16 lg:pt-24 pb-24 border-b border-border bg-background">
         <div className="max-w-4xl mx-auto px-6 space-y-12">
           <h2 className="text-4xl lg:text-5xl font-bold tracking-tight text-foreground text-center mb-16">
             {d.whatWeBuildHeading || defaults.whatWeBuildHeading}
@@ -468,9 +485,11 @@ export default async function Home() {
           </div>
         </div>
       </section>
+      )}
 
       {/* How It Works (Pipeline Flow) */}
-      <section id="how" className="py-16 lg:py-24 border-b border-border bg-secondary/5 relative overflow-hidden">
+      {!d.disableHowItWorks && (
+        <section id="how" className="py-16 lg:py-24 border-b border-border bg-secondary/5 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-6">
           <div className="space-y-16">
             <div className="max-w-2xl">
@@ -503,9 +522,11 @@ export default async function Home() {
           </div>
         </div>
       </section>
+      )}
 
       {/* Benefits Section */}
-      <section id="benefits" className="py-16 lg:py-24 border-b border-border bg-background">
+      {!d.disableBenefits && (
+        <section id="benefits" className="py-16 lg:py-24 border-b border-border bg-background">
         <div className="max-w-7xl mx-auto px-6">
           <div className="space-y-16">
             <h2 className="text-3xl lg:text-4xl font-bold tracking-tight text-foreground max-w-2xl">
@@ -543,9 +564,11 @@ export default async function Home() {
           </div>
         </div>
       </section>
+      )}
 
       {/* Testimonials */}
-      <section className="py-16 lg:py-24 border-b border-border bg-secondary/5">
+      {!d.disableTestimonials && (
+        <section className="py-16 lg:py-24 border-b border-border bg-secondary/5">
         <div className="max-w-7xl mx-auto px-6">
           <div className="space-y-12">
             <h2 className="text-3xl lg:text-4xl font-bold tracking-tight text-foreground">
@@ -578,23 +601,28 @@ export default async function Home() {
           </div>
         </div>
       </section>
+      )}
 
       {/* CTA Section */}
-      <CallToAction data={{
-        heading: d.ctaHeading,
-        subheading: d.ctaSubheading,
-        buttonText: d.ctaPrimaryText,
-        buttonLink: d.ctaPrimaryLink,
-        secondaryButtonText: d.ctaSecondaryText,
-        secondaryButtonLink: d.ctaSecondaryLink,
-        image: d.ctaImage,
-        imageAlignment: d.ctaImageAlignment || 'background'
-      }} />
+      {!d.disableCta && (
+        <>
+          <CallToAction data={{
+            heading: d.ctaHeading,
+            subheading: d.ctaSubheading,
+            buttonText: d.ctaPrimaryText,
+            buttonLink: d.ctaPrimaryLink,
+            secondaryButtonText: d.ctaSecondaryText,
+            secondaryButtonLink: d.ctaSecondaryLink,
+            image: d.ctaImage,
+            imageAlignment: d.ctaImageAlignment || 'background'
+          }} />
 
-      {/* Dynamic CTA Sections */}
-      {d.callToActions?.map((cta: any, idx: number) => (
-        <CallToAction key={idx} data={cta} />
-      ))}
+          {/* Dynamic CTA Sections */}
+          {d.callToActions?.map((cta: any, idx: number) => (
+            <CallToAction key={idx} data={cta} />
+          ))}
+        </>
+      )}
     </>
   )
 }
