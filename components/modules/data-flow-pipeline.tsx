@@ -81,31 +81,43 @@ function PipelineNode({ label, delay = 0, direction = 'up', accentClass, inView 
   )
 }
 
-// ─── Flow Arrow ───────────────────────────────────────────────────────────────
+// ─── Flow Connections (Curved Paths) ──────────────────────────────────────────
 
-function FlowArrow({ delay = 0, inView }: { delay?: number; inView: boolean }) {
+function FlowConnections({ type, inView, delay = 0, count = 3 }: { type: 'converge' | 'diverge'; inView: boolean; delay?: number; count?: number }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={inView ? { opacity: 1, scale: 1 } : {}}
-      transition={{ duration: 0.4, delay, ease: 'easeOut' }}
-      className="hidden lg:flex flex-col items-center justify-center gap-1 px-2"
-      aria-hidden="true"
-    >
-      {/* dashed line */}
-      <motion.div
-        initial={{ scaleX: 0 }}
-        animate={inView ? { scaleX: 1 } : {}}
-        transition={{ duration: 0.6, delay: delay + 0.1, ease: 'easeOut' }}
-        className="w-12 h-px origin-left bg-gradient-to-r from-border via-primary/30 to-border"
-      />
-      {/* arrowhead */}
-      <div className="relative -mt-1.5 -mr-0.5 self-end">
-        <svg width="8" height="8" viewBox="0 0 8 8" className="text-primary/40">
-          <path d="M0 4h6M4 1l3 3-3 3" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      </div>
-    </motion.div>
+    <div className="hidden lg:flex w-16 xl:w-24 h-full min-h-[160px] relative items-center justify-center">
+      <svg className="absolute w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100" style={{ overflow: 'visible' }}>
+        {Array.from({ length: count }).map((_, i) => {
+          const spacing = 100 / count
+          const y1 = type === 'converge' ? (spacing * i) + (spacing / 2) : 50
+          const y2 = type === 'converge' ? 50 : (spacing * i) + (spacing / 2)
+          const path = `M 0 ${y1} C 50 ${y1}, 50 ${y2}, 100 ${y2}`
+          
+          return (
+            <g key={i}>
+              <path d={path} fill="none" className="stroke-border" vectorEffect="non-scaling-stroke" strokeWidth="1" strokeDasharray="4 4" />
+              {inView && (
+                <motion.path 
+                  d={path} 
+                  fill="none" 
+                  className="stroke-primary" 
+                  vectorEffect="non-scaling-stroke" 
+                  strokeWidth="2"
+                  initial={{ pathLength: 0, opacity: 0 }}
+                  animate={{ pathLength: 1, opacity: [0, 1, 0] }}
+                  transition={{ 
+                    duration: 2.5, 
+                    repeat: Infinity, 
+                    delay: delay + (i * 0.4), 
+                    ease: "linear" 
+                  }}
+                />
+              )}
+            </g>
+          )
+        })}
+      </svg>
+    </div>
   )
 }
 
@@ -182,27 +194,68 @@ function EngineCore({ steps, inView }: { steps: string[]; inView: boolean }) {
 // ─── Business Outcomes Dashboard Panel ───────────────────────────────────────────
 
 function BusinessOutcomesDashboard({ inView, data }: { inView: boolean; data: DataFlowPipelineData }) {
-  // Generate initial static data with unique IDs
-  const [bars, setBars] = useState(() => 
-    [88, 89, 87, 85, 86, 84, 85, 83, 85, 86, 85, 85].map((v, i) => ({ id: i, value: v }))
-  )
-
+  // Generate streaming data points (40 points for smooth area chart)
+  const [dataPoints, setDataPoints] = useState<{id: number, value: number, timestamp: Date}[]>(() => {
+    return Array.from({ length: 40 }).map((_, i) => ({
+      id: i,
+      value: 85,
+      timestamp: new Date(Date.now() - (39 - i) * 2000)
+    }))
+  })
+  const [hoveredPointId, setHoveredPointId] = useState<number | null>(null)
+  const [clickedPointId, setClickedPointId] = useState<number | null>(null)
   const [btnState, setBtnState] = useState<'idle' | 'loading' | 'success'>('idle')
 
   // Live fluctuating chart effect
   useEffect(() => {
     if (!inView) return
-    let counter = 12
     const interval = setInterval(() => {
-      setBars(prev => {
-        const lastVal = prev[prev.length - 1].value
-        // Fluctuate around 85
-        const newVal = Math.max(80, Math.min(95, lastVal + (Math.random() * 6 - 3)))
-        return [...prev.slice(1), { id: counter++, value: newVal }]
+      setDataPoints(prev => {
+        const last = prev[prev.length - 1]
+        let next = last.value + (Math.random() * 6 - 3)
+        // constrain to realistic price bounds
+        if (next < 75) next = 75 + Math.random() * 2
+        if (next > 95) next = 95 - Math.random() * 2
+        return [...prev.slice(1), { 
+          id: last.id + 1, 
+          value: next, 
+          timestamp: new Date()
+        }]
       })
-    }, 1200)
+    }, 2000) // Slower update for easier interaction
     return () => clearInterval(interval)
   }, [inView])
+
+  // Deselect if point falls off chart
+  useEffect(() => {
+    if (clickedPointId !== null && !dataPoints.find(p => p.id === clickedPointId)) {
+      setClickedPointId(null)
+    }
+  }, [dataPoints, clickedPointId])
+
+  // Map values to 0-40 Y range for SVG (0 is top, 40 is bottom)
+  const pathString = dataPoints.map((pt, i) => {
+    const x = i * (100 / 39)
+    const y = 40 - ((pt.value - 70) / 30 * 40)
+    return `${i === 0 ? 'M' : 'L'} ${x} ${y}`
+  }).join(' ')
+  
+  const areaString = `${pathString} L 100 40 L 0 40 Z`
+  const latestVal = dataPoints[dataPoints.length - 1].value
+  const targetY = 40 - ((85 - 70) / 30 * 40)
+
+  // Interactive point logic
+  const activeId = clickedPointId !== null ? clickedPointId : hoveredPointId
+  const activeIndex = activeId !== null ? dataPoints.findIndex(p => p.id === activeId) : -1
+  const activePoint = activeIndex !== -1 ? dataPoints[activeIndex] : null
+
+  const formatDate = (date: Date) => {
+    const yyyy = date.getFullYear()
+    const mm = String(date.getMonth() + 1).padStart(2, '0')
+    const dd = String(date.getDate()).padStart(2, '0')
+    const time = date.toTimeString().split(' ')[0]
+    return `${yyyy}-${mm}-${dd} ${time}`
+  }
 
   return (
     <motion.div
@@ -280,49 +333,88 @@ function BusinessOutcomesDashboard({ inView, data }: { inView: boolean; data: Da
 
             <div className="font-mono text-[10px] tracking-widest uppercase text-muted-foreground mb-2 flex justify-between">
               <span>Competitor Trend (Live)</span>
-              <span className="flex items-center gap-1 text-[8px] text-green-500">
-                <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span> Streaming
+              <span className="flex items-center gap-1 text-[8px] text-green-500 font-bold">
+                <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span> STREAMING
               </span>
             </div>
-            <div className="h-20 w-full flex items-end gap-1 relative overflow-hidden pb-1 pt-5">
-              {/* Target line */}
-              <div className="absolute inset-x-0 bottom-[85%] h-px border-t border-dashed border-primary/40 flex items-center z-0">
-                <span className="absolute right-0 -top-4 font-mono text-[8px] text-primary/70 bg-background px-1">Target $85</span>
-              </div>
 
-              <AnimatePresence mode="popLayout">
-                {bars.map((bar, i) => {
-                  const isLatest = i === bars.length - 1
-                  return (
-                    <motion.div
-                      key={bar.id}
-                      layout
-                      initial={{ height: 0, opacity: 0, y: 10, scale: 0.8 }}
-                      animate={{ 
-                        height: `${bar.value}%`, 
-                        opacity: 1, 
-                        y: 0,
-                        scale: 1,
-                        backgroundColor: isLatest ? 'var(--primary)' : 'var(--border)'
-                      }}
-                      exit={{ opacity: 0, height: 0, transition: { duration: 0.2 } }}
-                      transition={{ 
-                        type: 'spring', 
-                        stiffness: 150, 
-                        damping: 15 
-                      }}
-                      className="flex-1 rounded-t-sm relative z-10"
-                      style={{ minWidth: '7%' }}
-                    >
-                      {isLatest && (
-                        <span className="absolute -top-5 left-1/2 -translate-x-1/2 font-mono text-[9px] text-primary whitespace-nowrap bg-primary/10 border border-primary/20 px-1 py-0.5 rounded-sm shadow-sm">
-                          ${bar.value.toFixed(2)}
-                        </span>
-                      )}
-                    </motion.div>
-                  )
-                })}
-              </AnimatePresence>
+            {/* HIGH CRAFT CHART */}
+            <div className="h-28 w-full relative border border-border bg-background overflow-hidden mb-6 group cursor-crosshair">
+               {/* Industrial Grid background */}
+               <div className="absolute inset-0 bg-[linear-gradient(to_right,hsl(var(--border))_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--border))_1px,transparent_1px)] bg-[size:10%_25%] opacity-40" />
+               
+               {/* Target Line */}
+               <div className="absolute inset-x-0 border-t border-dashed border-primary/50 flex items-center z-0" style={{ top: `${(targetY / 40) * 100}%` }}>
+                 <span className="absolute right-1 -top-4 font-mono text-[8px] text-primary/70 bg-background px-1">TGT $85</span>
+               </div>
+
+               {/* Streaming Area SVG */}
+               <svg viewBox="0 0 100 40" preserveAspectRatio="none" className="absolute inset-0 w-full h-full">
+                  <defs>
+                    <linearGradient id="chart-grad" x1="0" y1="0" x2="0" y2="1">
+                       <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.25" />
+                       <stop offset="100%" stopColor="var(--primary)" stopOpacity="0.0" />
+                    </linearGradient>
+                  </defs>
+                  <path d={areaString} fill="url(#chart-grad)" className="transition-all ease-linear" style={{ transitionDuration: '2s' }} />
+                  <path d={pathString} fill="none" className="stroke-primary transition-all ease-linear" vectorEffect="non-scaling-stroke" strokeWidth="1.5" style={{ transitionDuration: '2s' }} />
+               </svg>
+
+               {/* Default Live crosshair */}
+               <div 
+                 className={`absolute w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(var(--primary),0.8)] transition-all ease-linear -translate-x-1/2 -translate-y-1/2 z-10 ${activePoint ? 'opacity-0' : 'opacity-100'}`}
+                 style={{ left: '100%', top: `${( (40 - ((latestVal - 70) / 30 * 40)) / 40) * 100}%`, transitionDuration: '2s' }}
+               />
+               <div className={`absolute left-2 bottom-2 font-mono text-[10px] text-primary bg-primary/10 border border-primary/20 px-1.5 rounded flex items-center gap-1 z-10 transition-opacity duration-300 ${activePoint ? 'opacity-0' : 'opacity-100'}`}>
+                 <Activity className="w-3 h-3" />
+                 ${latestVal.toFixed(2)}
+               </div>
+
+               {/* Interaction Hitboxes */}
+               <div className="absolute inset-0 flex z-20" onMouseLeave={() => setHoveredPointId(null)}>
+                 {dataPoints.map((pt) => (
+                   <div 
+                     key={pt.id}
+                     className="flex-1 h-full cursor-crosshair"
+                     onMouseEnter={() => setHoveredPointId(pt.id)}
+                     onClick={() => setClickedPointId(clickedPointId === pt.id ? null : pt.id)}
+                   />
+                 ))}
+               </div>
+
+               {/* Active Point Interactive Overlay */}
+               {activePoint && activeIndex !== -1 && (
+                 <>
+                   {/* Vertical Line */}
+                   <div 
+                     className="absolute top-0 bottom-0 border-l border-dashed border-primary/50 pointer-events-none transition-all ease-linear z-10"
+                     style={{ left: `${activeIndex * (100 / 39)}%`, transitionDuration: '2s' }}
+                   />
+                   
+                   {/* Tooltip */}
+                   <div 
+                     className="absolute top-2 -translate-x-1/2 bg-background/95 border border-border px-2 py-1.5 shadow-md pointer-events-none z-30 flex flex-col items-center min-w-[130px] transition-all ease-linear whitespace-nowrap"
+                     style={{ left: `${activeIndex * (100 / 39)}%`, transitionDuration: '2s' }}
+                   >
+                     <span className="font-mono text-[8px] text-muted-foreground uppercase tracking-widest mb-0.5">
+                       {formatDate(activePoint.timestamp)}
+                     </span>
+                     <span className="font-mono text-sm font-bold text-primary">
+                       ${activePoint.value.toFixed(2)}
+                     </span>
+                   </div>
+                   
+                   {/* Dot on the line */}
+                   <div 
+                     className="absolute w-2 h-2 rounded-full bg-background border-2 border-primary pointer-events-none z-20 transition-all ease-linear -translate-x-1/2 -translate-y-1/2 shadow-[0_0_8px_rgba(var(--primary),0.8)]"
+                     style={{ 
+                       left: `${activeIndex * (100 / 39)}%`,
+                       top: `${(40 - ((activePoint.value - 70) / 30 * 40)) / 40 * 100}%`,
+                       transitionDuration: '2s'
+                     }}
+                   />
+                 </>
+               )}
             </div>
           </div>
 
@@ -488,50 +580,54 @@ export function DataFlowPipeline({ data }: DataFlowPipelineProps) {
         </div>
 
         {/* ── Pipeline Three-Column Layout ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr_auto_1fr] gap-6 lg:gap-0 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr_auto_1fr] gap-6 lg:gap-0 items-stretch">
 
           {/* ─── Col 1: Sources ─── */}
-          <div>
+          <div className="flex flex-col h-full">
             <ColumnHeader label="Sources" inView={isInView} delay={0.05} />
-            <div className="space-y-2.5">
+            <div className="flex-1 grid" style={{ gridTemplateRows: `repeat(${sources.length}, minmax(0, 1fr))` }}>
               {sources.map((label, i) => (
-                <PipelineNode
-                  key={label}
-                  label={label}
-                  delay={0.1 + i * 0.08}
-                  direction="left"
-                  accentClass="bg-blue-500"
-                  inView={isInView}
-                />
+                <div key={label} className="flex flex-col justify-center py-2">
+                  <PipelineNode
+                    label={label}
+                    delay={0.1 + i * 0.08}
+                    direction="left"
+                    accentClass="bg-blue-500"
+                    inView={isInView}
+                  />
+                </div>
               ))}
             </div>
           </div>
 
-          {/* Arrow L→C */}
-          <FlowArrow delay={0.4} inView={isInView} />
+          {/* Connectors L→C */}
+          <FlowConnections type="converge" count={sources.length} delay={0.4} inView={isInView} />
 
           {/* ─── Col 2: Engine ─── */}
-          <div>
+          <div className="flex flex-col h-full">
             <ColumnHeader label="Processing" align="center" inView={isInView} delay={0.15} />
-            <EngineCore steps={steps} inView={isInView} />
+            <div className="flex-1 flex flex-col justify-center">
+              <EngineCore steps={steps} inView={isInView} />
+            </div>
           </div>
 
-          {/* Arrow C→R */}
-          <FlowArrow delay={0.5} inView={isInView} />
+          {/* Connectors C→R */}
+          <FlowConnections type="diverge" count={destinations.length} delay={0.5} inView={isInView} />
 
           {/* ─── Col 3: Destinations ─── */}
-          <div>
+          <div className="flex flex-col h-full">
             <ColumnHeader label="Destinations" align="right" inView={isInView} delay={0.2} />
-            <div className="space-y-2.5">
+            <div className="flex-1 grid" style={{ gridTemplateRows: `repeat(${destinations.length}, minmax(0, 1fr))` }}>
               {destinations.map((label, i) => (
-                <PipelineNode
-                  key={label}
-                  label={label}
-                  delay={0.25 + i * 0.08}
-                  direction="right"
-                  accentClass="bg-emerald-500"
-                  inView={isInView}
-                />
+                <div key={label} className="flex flex-col justify-center py-2">
+                  <PipelineNode
+                    label={label}
+                    delay={0.25 + i * 0.08}
+                    direction="right"
+                    accentClass="bg-emerald-500"
+                    inView={isInView}
+                  />
+                </div>
               ))}
             </div>
           </div>
