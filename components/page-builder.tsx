@@ -6,6 +6,7 @@ import { GalleryModule } from './modules/gallery-module'
 import { FormModule } from './modules/form-module'
 import { VideoModule } from './modules/video-module'
 import { HeroStatsModule } from './modules/hero-stats-module'
+import { DataFlowPipeline } from './modules/data-flow-pipeline'
 
 const componentsMap: any = {
   heroModule: HeroModule,
@@ -16,6 +17,7 @@ const componentsMap: any = {
   form: FormModule,
   video: VideoModule,
   heroStatsModule: HeroStatsModule,
+  dataFlowPipeline: DataFlowPipeline,
 }
 
 export function PageBuilder({ blocks }: { blocks: any[] }) {
