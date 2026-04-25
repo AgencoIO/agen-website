@@ -336,7 +336,12 @@ export async function getNavigation() {
       headerLinks[] {
         label,
         href,
-        openInNewTab
+        openInNewTab,
+        dropdownItems[] {
+          label,
+          href,
+          openInNewTab
+        }
       },
       footerLinks[] {
         label,

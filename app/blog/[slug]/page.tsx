@@ -9,6 +9,7 @@ import { ArrowLeft, Clock, Calendar } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { PortableText } from '@portabletext/react'
 import { PortableTextComponents } from '@/components/portable-text'
+import { CallToAction } from '@/components/modules/call-to-action'
 
 // Revalidate every 60 seconds
 export const revalidate = 60
@@ -239,6 +240,15 @@ export default async function BlogPostPage({ params }: PostPageProps) {
           </div>
         )}
       </article>
+
+      {/* Dynamic CTA Sections from Post */}
+      {post.callToActions && post.callToActions.length > 0 && (
+        <div className="border-t border-border mt-8">
+          {post.callToActions.map((cta: any, idx: number) => (
+            <CallToAction key={`cta-${idx}`} data={cta} />
+          ))}
+        </div>
+      )}
 
     </>
   )

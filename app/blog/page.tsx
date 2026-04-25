@@ -7,6 +7,8 @@ import { format } from 'date-fns'
 import { ArrowRight, Clock, Tag } from 'lucide-react'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { getHomepage } from '@/lib/queries'
+import { CallToAction } from '@/components/modules/call-to-action'
 
 export const metadata: Metadata = {
   title: 'Blog | Agenco',
@@ -50,9 +52,10 @@ interface Category {
 }
 
 export default async function BlogPage() {
-  const [posts, categories]: [Post[], Category[]] = await Promise.all([
+  const [posts, categories, homepage] = await Promise.all([
     getAllPosts(),
     getAllCategories(),
+    getHomepage(),
   ])
 
   return (
@@ -206,6 +209,14 @@ export default async function BlogPage() {
           )}
         </div>
       </section>
+      {/* Dynamic CTA Section from Homepage */}
+      {homepage?.callToActions && homepage.callToActions.length > 0 && (
+        <div className="mt-8">
+          {homepage.callToActions.map((cta: any, idx: number) => (
+            <CallToAction key={`cta-${idx}`} data={cta} />
+          ))}
+        </div>
+      )}
 
     </>
   )
