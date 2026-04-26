@@ -291,7 +291,7 @@ function BusinessOutcomesDashboard({ inView, data }: { inView: boolean; data: Da
           <div className="absolute top-4 left-4 font-mono text-[10px] tracking-widest uppercase text-muted-foreground">
             Monitored SKU
           </div>
-          <div className="mt-6 w-full max-w-[200px] aspect-[4/3] relative rounded-md border border-border overflow-hidden bg-white flex items-center justify-center shadow-sm">
+          <div className="mt-6 w-full max-w-[500px] aspect-[4/3] relative rounded-md border border-border overflow-hidden bg-white flex items-center justify-center shadow-sm">
             <Image 
               src="/images/ecommerce_product_card.png" 
               alt="Monitored Product" 
