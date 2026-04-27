@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react'
 import Image from 'next/image'
 import { motion, useInView, useScroll, useTransform, AnimatePresence } from 'framer-motion'
-import { Activity, ArrowRightLeft, CheckCircle2, ShoppingCart, Tag, TrendingDown } from 'lucide-react'
+import { Activity, ArrowRightLeft, CheckCircle2, ShoppingCart, Tag, TrendingDown, TrendingUp } from 'lucide-react'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -311,7 +311,7 @@ function BusinessOutcomesDashboard({ inView, data }: { inView: boolean; data: Da
             <div className="flex items-center justify-between mb-4">
               <span className="font-mono text-[10px] tracking-widest uppercase text-muted-foreground">Market Position</span>
               <span className="font-mono text-[10px] bg-red-500/10 text-red-600 border border-red-500/20 px-2 py-0.5 uppercase flex items-center gap-1">
-                <TrendingDown className="w-3 h-3" /> Losing Buy Box
+                <TrendingUp className="w-3 h-3" /> Wining Buy Box
               </span>
             </div>
 
