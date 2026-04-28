@@ -20,6 +20,8 @@ export interface DataFlowPipelineData {
   dashboardYourPrice?: string
   dashboardCompetitorAvg?: string
   dashboardRecommendation?: string
+  hidePipeline?: boolean
+  hideDashboard?: boolean
 }
 
 interface DataFlowPipelineProps {
@@ -521,9 +523,16 @@ export function DataFlowPipeline({ data }: DataFlowPipelineProps) {
   const title = data?.sectionTitle || 'Intelligent Data Flow'
   const description = data?.sectionDescription || 'Fragmented sources unified into actionable intelligence — in real time.'
   const badge = data?.badgeLabel || 'Pipeline Architecture'
-  const sources = data?.sources?.length ? data.sources : ['APIs / Webhooks', 'Web Scraping', 'CDC Streams']
+  const hidePipeline = data?.hidePipeline || false
+  const hideDashboard = data?.hideDashboard || false
+  
+  // Use CMS sources if provided (even if empty), otherwise fallback to defaults
+  const sources = data?.sources?.length ? data.sources : (data?.sources ? [] : ['APIs / Webhooks', 'Web Scraping', 'CDC Streams'])
   const steps = data?.processingSteps?.length ? data.processingSteps : ['Data Cleaning', 'Transformation', 'Enrichment']
   const destinations = data?.destinations?.length ? data.destinations : ['Data Lake (S3)', 'Search Analytics', 'Client Databases']
+
+  const showPipelineVisual = !hidePipeline && sources.length > 0
+  const showDashboardVisual = !hideDashboard
 
   return (
     <section
@@ -580,76 +589,80 @@ export function DataFlowPipeline({ data }: DataFlowPipelineProps) {
         </div>
 
         {/* ── Pipeline Three-Column Layout ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr_auto_1fr] gap-6 lg:gap-0 items-stretch">
+        {showPipelineVisual && (
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr_auto_1fr] gap-6 lg:gap-0 items-stretch">
 
-          {/* ─── Col 1: Sources ─── */}
-          <div className="flex flex-col h-full">
-            <ColumnHeader label="Sources" inView={isInView} delay={0.05} />
-            <div className="flex-1 grid" style={{ gridTemplateRows: `repeat(${sources.length}, minmax(0, 1fr))` }}>
-              {sources.map((label, i) => (
-                <div key={label} className="flex flex-col justify-center py-2">
-                  <PipelineNode
-                    label={label}
-                    delay={0.1 + i * 0.08}
-                    direction="left"
-                    accentClass="bg-blue-500"
-                    inView={isInView}
-                  />
-                </div>
-              ))}
+            {/* ─── Col 1: Sources ─── */}
+            <div className="flex flex-col h-full">
+              <ColumnHeader label="Sources" inView={isInView} delay={0.05} />
+              <div className="flex-1 grid" style={{ gridTemplateRows: `repeat(${sources.length}, minmax(0, 1fr))` }}>
+                {sources.map((label, i) => (
+                  <div key={label} className="flex flex-col justify-center py-2">
+                    <PipelineNode
+                      label={label}
+                      delay={0.1 + i * 0.08}
+                      direction="left"
+                      accentClass="bg-blue-500"
+                      inView={isInView}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Connectors L→C */}
+            <FlowConnections type="converge" count={sources.length} delay={0.4} inView={isInView} />
+
+            {/* ─── Col 2: Engine ─── */}
+            <div className="flex flex-col h-full">
+              <ColumnHeader label="Processing" align="center" inView={isInView} delay={0.15} />
+              <div className="flex-1 flex flex-col justify-center">
+                <EngineCore steps={steps} inView={isInView} />
+              </div>
+            </div>
+
+            {/* Connectors C→R */}
+            <FlowConnections type="diverge" count={destinations.length} delay={0.5} inView={isInView} />
+
+            {/* ─── Col 3: Destinations ─── */}
+            <div className="flex flex-col h-full">
+              <ColumnHeader label="Destinations" align="right" inView={isInView} delay={0.2} />
+              <div className="flex-1 grid" style={{ gridTemplateRows: `repeat(${destinations.length}, minmax(0, 1fr))` }}>
+                {destinations.map((label, i) => (
+                  <div key={label} className="flex flex-col justify-center py-2">
+                    <PipelineNode
+                      label={label}
+                      delay={0.25 + i * 0.08}
+                      direction="right"
+                      accentClass="bg-emerald-500"
+                      inView={isInView}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-
-          {/* Connectors L→C */}
-          <FlowConnections type="converge" count={sources.length} delay={0.4} inView={isInView} />
-
-          {/* ─── Col 2: Engine ─── */}
-          <div className="flex flex-col h-full">
-            <ColumnHeader label="Processing" align="center" inView={isInView} delay={0.15} />
-            <div className="flex-1 flex flex-col justify-center">
-              <EngineCore steps={steps} inView={isInView} />
-            </div>
-          </div>
-
-          {/* Connectors C→R */}
-          <FlowConnections type="diverge" count={destinations.length} delay={0.5} inView={isInView} />
-
-          {/* ─── Col 3: Destinations ─── */}
-          <div className="flex flex-col h-full">
-            <ColumnHeader label="Destinations" align="right" inView={isInView} delay={0.2} />
-            <div className="flex-1 grid" style={{ gridTemplateRows: `repeat(${destinations.length}, minmax(0, 1fr))` }}>
-              {destinations.map((label, i) => (
-                <div key={label} className="flex flex-col justify-center py-2">
-                  <PipelineNode
-                    label={label}
-                    delay={0.25 + i * 0.08}
-                    direction="right"
-                    accentClass="bg-emerald-500"
-                    inView={isInView}
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+        )}
 
         {/* ── Business Outcomes Dashboard (post-destination output) ── */}
-        <div className="mt-4">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : {}}
-            transition={{ duration: 0.4, delay: 0.55 }}
-            className="flex items-center gap-2 mb-2"
-          >
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="text-muted-foreground/50">
-              <path d="M6 1v5l3 1.5" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/>
-            </svg>
-            <span className="font-mono text-[9px] tracking-[0.2em] uppercase text-muted-foreground/50">
-              Output → Intelligence Layer
-            </span>
-          </motion.div>
-          <BusinessOutcomesDashboard inView={isInView} data={data} />
-        </div>
+        {showDashboardVisual && (
+          <div className="mt-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={isInView ? { opacity: 1 } : {}}
+              transition={{ duration: 0.4, delay: 0.55 }}
+              className="flex items-center gap-2 mb-2"
+            >
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="text-muted-foreground/50">
+                <path d="M6 1v5l3 1.5" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/>
+              </svg>
+              <span className="font-mono text-[14px] tracking-[0.2em] uppercase text-muted-foreground/50">
+                Output → Intelligence Layer
+              </span>
+            </motion.div>
+            <BusinessOutcomesDashboard inView={isInView} data={data} />
+          </div>
+        )}
 
         {/* ── Bottom narrative phases ── */}
         <motion.div
