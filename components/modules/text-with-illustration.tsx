@@ -1,3 +1,6 @@
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+
 export function TextWithIllustration({ data }: { data: any }) {
   const isLeft = data.imageAlignment === "left"
 
@@ -19,6 +22,25 @@ export function TextWithIllustration({ data }: { data: any }) {
             {data.copy && (
               <div className="prose prose-invert prose-headings:font-bold prose-headings:uppercase prose-p:text-muted-foreground prose-p:leading-relaxed max-w-none">
                 <p>{data.copy}</p>
+              </div>
+            )}
+            
+            {(data.primaryButtonText || data.secondaryButtonText) && (
+              <div className="mt-8 flex flex-wrap gap-4">
+                {data.primaryButtonText && data.primaryButtonLink && (
+                  <Link href={data.primaryButtonLink}>
+                    <Button size="lg" className="rounded-none font-bold tracking-widest uppercase shadow-md hover:scale-105 transition-all">
+                      {data.primaryButtonText}
+                    </Button>
+                  </Link>
+                )}
+                {data.secondaryButtonText && data.secondaryButtonLink && (
+                  <Link href={data.secondaryButtonLink}>
+                    <Button size="lg" variant="outline" className="rounded-none font-bold tracking-widest uppercase shadow-sm hover:scale-105 transition-all bg-transparent border-primary/50 text-foreground hover:bg-primary/10">
+                      {data.secondaryButtonText}
+                    </Button>
+                  </Link>
+                )}
               </div>
             )}
           </div>
