@@ -6,6 +6,7 @@ import { ArrowRight, Zap, TrendingUp, Layers, Shield, Target, BarChart, Database
 import { getHomepage } from '@/lib/queries'
 import { CallToAction } from '@/components/modules/call-to-action'
 import { DataFlowPipeline } from '@/components/modules/data-flow-pipeline'
+import WhatWeBuild3D from '@/components/modules/what-we-build-3d'
 
 // Revalidate every 60 seconds
 export const revalidate = 60
@@ -437,54 +438,9 @@ export default async function Home() {
       </section>
       )}
 
-      {/* What We Build (Scroll Experience / Sticky Stacking Cards) */}
+      {/* What We Build (3D Neural HUD Scroll Experience) */}
       {!d.disableWhatWeBuild && (
-        <section id="what-we-build" className="pt-16 lg:pt-24 pb-24 border-b border-border bg-background">
-        <div className="max-w-4xl mx-auto px-6 space-y-12">
-          <h2 className="text-4xl lg:text-5xl font-bold tracking-tight text-foreground text-center mb-16">
-            {d.whatWeBuildHeading || defaults.whatWeBuildHeading}
-          </h2>
-          
-          <div className="relative isolate">
-             {whatWeBuildItems.map((item: any, i: number) => (
-                <div 
-                   key={i} 
-                   className="sticky group mb-24 border border-border bg-card/60 backdrop-blur-xl rounded-none shadow-2xl p-10 sm:p-14 transition-all duration-500 overflow-hidden"
-                   style={{ 
-                     top: `calc(15vh + ${i * 60}px)`, 
-                     zIndex: i,
-                     boxShadow: '0 -20px 40px -10px rgba(0,0,0,0.5)'
-                   }}
-                >
-                   {/* Decorative Terminal Accent */}
-                   <div className="absolute top-0 right-0 p-4 opacity-10 font-mono text-9xl font-black mix-blend-overlay pointer-events-none transform translate-x-4 -translate-y-6">0{i + 1}</div>
-                   
-                   <div className="relative z-10 grid gap-8">
-                      <div className="space-y-4">
-                        <div className="font-mono text-primary text-sm tracking-widest uppercase flex items-center gap-3">
-                           <span className="w-8 h-[1px] bg-primary"></span> System {i + 1}
-                        </div>
-                        <h3 className="text-3xl sm:text-4xl font-bold tracking-tight">{item.title}</h3>
-                        <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl">
-                          {item.description}
-                        </p>
-                      </div>
-
-                      {item.tags && item.tags.length > 0 && (
-                        <div className="flex flex-wrap gap-3 pt-6 border-t border-border/50">
-                          {item.tags.map((tag: string, tIndex: number) => (
-                            <span key={tIndex} className="px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-mono uppercase tracking-wider">
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                   </div>
-                </div>
-             ))}
-          </div>
-        </div>
-      </section>
+        <WhatWeBuild3D data={d} items={whatWeBuildItems} />
       )}
 
       {/* How It Works (Pipeline Flow) */}

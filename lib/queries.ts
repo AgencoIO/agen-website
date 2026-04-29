@@ -280,7 +280,13 @@ export async function getHomepage() {
       howSteps,
       disableWhatWeBuild,
       whatWeBuildHeading,
-      whatWeBuildItems,
+      whatWeBuildItems[] {
+        ...,
+        primaryCtaLabel,
+        primaryCtaLink,
+        secondaryCtaLabel,
+        secondaryCtaLink
+      },
       disableBenefits,
       benefitsHeading,
       benefitItems,
