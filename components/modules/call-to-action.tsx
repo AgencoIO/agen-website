@@ -119,7 +119,7 @@ export function CallToAction({ data }: { data: any }) {
         <div className={`flex-1 relative bg-card ${isHorizontalSplit ? 'md:w-1/2 min-h-[300px]' : 'w-full min-h-[300px] border-y border-t-primary/20 border-b-transparent'} overflow-hidden`}>
           {hasImage ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={data.image.asset.url} alt="CTA Visual" className="w-full h-full object-cover grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-700 select-none" />
+            <img src={data.image.asset.url} alt="CTA Visual" className="w-full h-full object-cover opacity-100 transition-all duration-700 select-none" />
           ) : (
             <div className="absolute inset-0 flex flex-col justify-between p-6 font-mono text-xs text-primary/70 border-l border-primary/20 bg-primary/10">
               <div className="space-y-4">

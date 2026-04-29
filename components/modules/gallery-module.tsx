@@ -28,7 +28,7 @@ export function GalleryModule({ data }: { data: any }) {
               <img 
                 src={url} 
                 alt={`Gallery asset ${idx + 1}`} 
-                className="w-full h-full object-cover filter grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 scale-100 group-hover:scale-105 transition-all duration-500"
+                className="w-full h-full object-cover opacity-100 scale-100 group-hover:scale-105 transition-all duration-500"
               />
               <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
                  <Search className="w-10 h-10 text-primary-foreground" />

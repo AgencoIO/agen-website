@@ -28,7 +28,7 @@ export function VideoModule({ data }: { data: any }) {
              <img 
                src={data.videoUrl.includes('jpg') ? data.videoUrl : "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070"} 
                alt="Video placeholder" 
-               className="opacity-50 grayscale group-hover:opacity-80 group-hover:grayscale-[50%] transition-all duration-700 w-full h-full object-cover" 
+               className="opacity-100 transition-all duration-700 w-full h-full object-cover" 
              />
              <div className="absolute bottom-4 left-4 right-4 z-10 flex justify-between font-mono text-xs text-white/70">
                 <span>00:00:00 / --:--:--</span>

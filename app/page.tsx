@@ -255,7 +255,7 @@ export default async function Home() {
               <div className="flex flex-wrap justify-center items-center gap-x-12 md:gap-x-20 gap-y-12 opacity-80 mt-12">
                 {d.trustedByCompanies.map((company: any, i: number) => (
                   company?.asset?.url && (
-                    <div key={i} className="relative h-8 sm:h-12 w-28 sm:w-40 grayscale hover:grayscale-0 hover:scale-105 hover:opacity-100 transition-all duration-[400ms] cursor-pointer">
+                    <div key={i} className="relative h-8 sm:h-12 w-28 sm:w-40 hover:scale-105 opacity-100 transition-all duration-[400ms] cursor-pointer">
                       <Image 
                         src={company.asset.url} 
                         alt={company.alt || 'Trusted Partner'} 
@@ -378,7 +378,7 @@ export default async function Home() {
                     <div key={i} className="group relative flex items-center justify-center p-6 rounded-none border border-border bg-card/40 backdrop-blur-sm hover:border-primary/50 hover:bg-card/80 transition-all duration-300">
                       <div className="flex flex-col items-center justify-center h-full gap-4">
                         {logoUrl && (
-                          <div className="relative w-10 h-10 grayscale group-hover:grayscale-0 transition-all duration-500">
+                          <div className="relative w-10 h-10 transition-all duration-500">
                             <Image src={logoUrl} alt={tool.name} fill className="object-contain" />
                           </div>
                         )}

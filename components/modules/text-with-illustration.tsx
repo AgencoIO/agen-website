@@ -53,7 +53,7 @@ export function TextWithIllustration({ data }: { data: any }) {
               <img 
                 src={data.image.asset.url} 
                 alt={data.heading || "Illustration"} 
-                className="relative z-10 w-full h-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-700" 
+                className="relative z-10 w-full h-full object-contain transition-all duration-700" 
               />
             ) : (
               <div className="relative z-10 w-full h-full border border-dashed border-primary/40 bg-primary/5 flex flex-col items-center justify-center font-mono text-muted-foreground text-sm">
