@@ -205,7 +205,7 @@ export default function WhatWeBuild3D({ data, items }: WhatWeBuild3DProps) {
                 {items[activeIndex]?.tags && (
                   <div className="flex flex-wrap justify-center gap-2 pt-4">
                     {items[activeIndex].tags.map((tag: string, i: number) => (
-                      <span key={i} className="px-3 py-1 bg-white/5 border border-white/20 text-[10px] font-mono text-white uppercase tracking-wider">
+                      <span key={i} className="px-3 py-1 rounded-none bg-white/5 border border-white/20 text-[10px] font-mono text-white uppercase tracking-wider">
                         {tag}
                       </span>
                     ))}
@@ -215,15 +215,14 @@ export default function WhatWeBuild3D({ data, items }: WhatWeBuild3DProps) {
                 {/* CTA Buttons */}
                 <div className="flex flex-wrap justify-center gap-4 pt-8 pointer-events-auto">
                   {items[activeIndex]?.primaryCtaLabel && (
-                    <Button asChild size="lg" className="rounded-full bg-white text-black hover:bg-zinc-200 px-8">
+                    <Button asChild size="lg" className="rounded-none bg-transparent border border-white text-white hover:bg-white/10 transition-all duration-300 px-8">
                       <Link href={items[activeIndex].primaryCtaLink || "#"}>
                         {items[activeIndex].primaryCtaLabel}
-                        <ArrowRight className="ml-2 h-4 w-4" />
                       </Link>
                     </Button>
                   )}
                   {items[activeIndex]?.secondaryCtaLabel && (
-                    <Button asChild variant="outline" size="lg" className="rounded-full border-white/20 text-white hover:bg-white/10 px-8">
+                    <Button asChild variant="outline" size="lg" className="rounded-none border border-white bg-transparent text-white hover:bg-white/10 transition-all duration-300 px-8">
                       <Link href={items[activeIndex].secondaryCtaLink || "#"}>
                         {items[activeIndex].secondaryCtaLabel}
                       </Link>
