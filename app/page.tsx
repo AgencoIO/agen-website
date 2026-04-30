@@ -294,6 +294,10 @@ export default async function Home() {
       {/* ─── Data Flow Pipeline ─── */}
       {!d.disablePipeline && <DataFlowPipeline data={d.dataFlowPipeline} />}
 
+      {/* What We Build (3D Neural HUD Scroll Experience) */}
+      {!d.disableWhatWeBuild && (
+        <WhatWeBuild3D data={d} items={whatWeBuildItems} />
+      )}
       {/* Architecture Overview Section */}
       {!d.disableArchitecture && d.architectureLayers && d.architectureLayers.length > 0 && (
         <section className="py-16 lg:py-24 border-b border-border bg-gradient-to-b from-background to-secondary/10">
@@ -436,11 +440,6 @@ export default async function Home() {
           </div>
         </div>
       </section>
-      )}
-
-      {/* What We Build (3D Neural HUD Scroll Experience) */}
-      {!d.disableWhatWeBuild && (
-        <WhatWeBuild3D data={d} items={whatWeBuildItems} />
       )}
 
       {/* How It Works (Pipeline Flow) */}

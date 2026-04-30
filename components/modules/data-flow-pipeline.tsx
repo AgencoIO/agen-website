@@ -35,7 +35,7 @@ const fadeUp = {
   visible: (delay = 0) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.55, delay, ease: 'easeOut' as const },
+    transition: { duration: 0.15, delay, ease: 'easeOut' as const },
   }),
 }
 
@@ -269,9 +269,9 @@ function BusinessOutcomesDashboard({ inView, data }: { inView: boolean; data: Da
     >
       {/* Dashboard titlebar */}
       <div className="flex items-center justify-between px-5 py-3 border-b border-border bg-secondary/40">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4">
           <Activity className="w-4 h-4 text-primary" />
-          <span className="font-mono text-[10px] tracking-[0.18em] uppercase text-muted-foreground">
+          <span className="font-mono text-[10px] tracking-[0.18em] uppercase text-muted-foreground w-24 truncate">
             {data?.dashboardTitle || 'Price Intelligence Output'}
           </span>
         </div>
