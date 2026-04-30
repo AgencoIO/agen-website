@@ -198,7 +198,7 @@ export default function WhatWeBuild3D({ data, items }: WhatWeBuild3DProps) {
                   {items[activeIndex]?.title || "SYSTEM_ACTIVE"}
                 </h2>
                 
-                <p className="text-lg md:text-xl text-zinc-400 font-light max-w-xl mx-auto leading-relaxed">
+                <p className="text-lg md:text-xl text-zinc-300 font-light max-w-xl mx-auto leading-relaxed">
                   {items[activeIndex]?.description}
                 </p>
 
