@@ -253,10 +253,10 @@ export default async function Home() {
                   </span>
                 </div>
               </div>
-              <div className="flex flex-wrap justify-center items-center gap-x-12 md:gap-x-20 gap-y-12 opacity-80 mt-12">
+              <div className="flex flex-wrap justify-center items-center gap-x-12 md:gap-x-20 gap-y-12 mt-12">
                 {d.trustedByCompanies.map((company: any, i: number) => (
                   company?.asset?.url && (
-                    <div key={i} className="relative h-8 sm:h-12 w-28 sm:w-40 hover:scale-105 opacity-100 transition-all duration-[400ms] cursor-pointer">
+                    <div key={i} className="relative h-8 sm:h-12 w-28 sm:w-40 opacity-80 grayscale brightness-125 contrast-75">
                       <Image 
                         src={company.asset.url} 
                         alt={company.alt || 'Trusted Partner'} 
